@@ -6,7 +6,7 @@ body {
 }
 
 
-button, #back_btn, #create_wall, #loc_refresh, #topics {
+button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall {
 	background-color: #000;
 	color: #2CE92C;
 	border: 1px solid #2CE92C;

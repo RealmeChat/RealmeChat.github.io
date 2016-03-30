@@ -32,6 +32,12 @@ heading {
 }
 
 
+#create_wall {
+	background-color: #0FB;
+	color: black;
+}
+
+
 point {
 	/*background-color: #804;*/
 }

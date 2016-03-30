@@ -74,8 +74,6 @@
 		position: fixed;
 		top: 0px;
 		left: 50%;
-		background-color: #0FB;
-		color: black;
 		transform: translateX(-50%);
 	}
 
@@ -120,7 +118,7 @@
 	<div id="loc_refresh" onclick="refreshLocation()"></div>
 </div>
 
-<changeSrc id="create_wall" target="content_view" src="views/modWall.html">+ Create Wall</changeSrc>
+<changeSrc id="create_wall" target="content_view" src="views/modWall.html" style="display: none">+ Create Wall</changeSrc>
 
 
 <script>
@@ -285,6 +283,8 @@ PINE.ready(function(){
 	
 
 	refreshLocation = function() {
+
+
 		var options = {
 		  	enableHighAccuracy: true,
 		  	timeout: 5000,
@@ -292,6 +292,7 @@ PINE.ready(function(){
 		};
 
 		navigator.geolocation.getCurrentPosition(function(position){
+			El.byId("create_wall").style.display = "inherit";
 			setLocation(position.coords.latitude, position.coords.longitude)
 			updatePointPositions();
 		},
@@ -312,6 +313,8 @@ PINE.ready(function(){
 	
 
 	function setLocation(i_lat, i_lng) {
+		// if(i_lat != 30 || i_lng != -97)
+
 		loc.lat = i_lat;
 		loc.lng = i_lng;
 
@@ -347,10 +350,8 @@ PINE.ready(function(){
 	        if (request.status >= 200 && request.status < 400) {
 	            // Success!
 	            var response = request.responseText;
-	            console.log(response);
+	            
 	            var data = JSON.parse(response);
-	            console.log(data);
-	            console.log(data.name);
 
 	            addPointsToMap(data.vals);
 
