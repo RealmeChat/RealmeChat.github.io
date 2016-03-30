@@ -80,7 +80,7 @@ input {
     padding: 4px;
 }
 
-button, #back_btn, #create_wall, #loc_refresh, #topics {
+button, #back_btn, #create_wall, #loc_refresh, #topics, .btn {
     cursor: pointer;
     margin: 10px;
     padding: 10px;
@@ -208,6 +208,10 @@ noscript {
                 back_btn.innerHTML = "<- Wall";
             }
             else if(src.indexOf("views/posts") != -1) {
+                back_btn.setAttribute("src", "views/map.html");
+                back_btn.innerHTML = "<- Map";
+            }
+            else if(src.indexOf("views/about") != -1) {
                 back_btn.setAttribute("src", "views/map.html");
                 back_btn.innerHTML = "<- Map";
             }

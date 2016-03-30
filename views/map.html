@@ -95,6 +95,11 @@
 		background-image: url('public/images/icons/gear.png');
 	}
 
+	#about_btn {
+		position: absolute;
+		bottom: 0px;
+	}
+
 </style>
 
 
@@ -117,6 +122,8 @@
 	<button onclick="mapZoom(0.5)">Zoom Out -</button> -->
 
 	<div id="loc_refresh" onclick="refreshLocation()"></div>
+
+	<changeSrc id="about_btn" class="btn" target="content_view" src="views/about.html">?</changeSrc>
 </div>
 
 <changeSrc id="create_wall" target="content_view" src="views/modWall.html" style="display: none">+ Create Wall</changeSrc>

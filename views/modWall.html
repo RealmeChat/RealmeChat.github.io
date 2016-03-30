@@ -46,11 +46,21 @@
 		var request = new XMLHttpRequest();
         request.open('POST', PATH_TO_SERVER+'/aardvark/walls', true);
         request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+      	request.onload = function() {
+	        if (request.status >= 200 && request.status < 400) {
+	            var response = request.responseText;
+	            var data = JSON.parse(response);
+	            console.log(data);
+	            El.byId("content_view").FNS.changeSrc("views/posts.html?wall="+data.wall_id);
+	        } else {
+	            alert("include src '"+target+"' does not exist")
+	        }
+	    };
 	  	request.send(JSON.stringify(data));
 
-	  	setTimeout(function() {
-	  		El.byId("content_view").FNS.changeSrc("views/map.html");	
-	  	}, 100);
+	  	// setTimeout(function() {
+	  	// 	El.byId("content_view").FNS.changeSrc("views/map.html");	
+	  	// }, 100);
 	  	
 	}
 
