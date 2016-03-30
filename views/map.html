@@ -279,13 +279,30 @@ PINE.ready(function(){
 	*****************/
 
 	// setLocation(30, -97);
-	setLocation(29.985899, -90.090230);
+	
 	// setLocation(30.29825, -97.64311);
+
+// '46', '', '30.23204', '-98.00381', '100', '25', '0'
+
+// setLocation(30.23204, -98.00381)
+
+	getPoints();
 
 	
 
-	refreshLocation = function() {
+	
 
+	setLocation = function(i_lat, i_lng) {
+		loc.lat = i_lat;
+		loc.lng = i_lng;
+
+		getPoints();
+	}
+
+	
+
+
+	refreshLocation = function() {
 
 		var options = {
 		  	enableHighAccuracy: true,
@@ -311,17 +328,7 @@ PINE.ready(function(){
 
 
 	refreshLocation();
-
-	
-
-	function setLocation(i_lat, i_lng) {
-		// if(i_lat != 30 || i_lng != -97)
-
-		loc.lat = i_lat;
-		loc.lng = i_lng;
-
-		getPoints();
-	}
+		
 
 	function getPoints()  {
 		var min_lat = loc.lat - 2;
