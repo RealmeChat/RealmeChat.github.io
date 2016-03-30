@@ -3,13 +3,20 @@ body {
 	color: #FAFAFA;
 }
 
-commentbox {
+commentbox, input {
 	background-color: #333;
 	color: #0FA;
+	border: 1px solid black;
 }
 
 heading {
 	background-color: #15AA9A;
+}
+
+button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall {
+	background-color: #1BE481;
+	border: 1px solid rgba(0,0,0,0.3);
+	color: #222;
 }
 
 #map {
