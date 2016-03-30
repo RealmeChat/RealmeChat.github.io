@@ -6,6 +6,11 @@ body {
 	color: #262123;
 }
 
+button, #back_btn, #create_wall, #loc_refresh, #topics {
+	background-color: #FC814A;
+	border: 1px solid rgba(0,0,0,0.3);
+}
+
 heading {
 	background-color: #FC814A;
 }

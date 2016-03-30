@@ -81,6 +81,16 @@
 		border-radius: 5px;
 		background-color: #444;
 	}
+
+	topic {
+		display: block;
+		padding: 10px;
+	}
+
+	topic changesrc {
+		border: 1px solid black;
+		border-radius: 10px;
+	}
 </style>
 
 <heading>Topics for wall</heading>
@@ -90,7 +100,7 @@
 <topiclist spawner="posts" autoRun="false">
 	<!-- <post spawn>#{{posts[i].topic_tag}}</post> -->
 	<topic>
-		<changeSrc target="content_view" src="views/posts.html?wall={{wall}}">No Topic</changeSrc>
+		<changeSrc target="content_view" src="views/posts.html?wall={{wall}}">View all posts</changeSrc>
 	</topic>
 	<topic spawn>
 		<changeSrc target="content_view" src="views/posts.html?wall={{wall}}&topic={{posts[i].topic_id}}">#{{posts[i].topic_tag}}</changeSrc>

@@ -24,6 +24,7 @@
 	#you {
 		top: 50%;
 		left: 50%;
+		z-index: 20;
 	}
 
 	.dot, point {
@@ -72,9 +73,27 @@
 	#create_wall {
 		position: fixed;
 		top: 0px;
-		right: 0px;
+		left: 50%;
 		background-color: #0FB;
 		color: black;
+		transform: translateX(-50%);
+	}
+
+	#loc_refresh, #settings_btn {
+		background-size: cover;
+		background-repeat: no-repeat;
+		height: 40px;
+		width: 40px;
+	}
+
+	#loc_refresh {
+		position: relative;
+		z-index: 5;
+		background-image: url('public/images/icons/refresh.png');
+	}
+
+	#settings_btn {
+		background-image: url('public/images/icons/gear.png');
 	}
 
 </style>
@@ -90,7 +109,7 @@
 			lat="{{walls[i].wall_lat}}" 
 			lng="{{walls[i].wall_lng}}"
 			title="{{walls[i].wall_name}}">
-			<changeSrc target="content_view" src="views/wallTopics.html?wall={{walls[i].wall_id}}"></changeSrc>
+			<changeSrc target="content_view" src="views/posts.html?wall={{walls[i].wall_id}}"></changeSrc>
 		</point>
 	</points>
 	<span id="readout"></span>
@@ -98,10 +117,10 @@
 	<!-- <button onclick="mapZoom(2)">Zoom In +</button><br>
 	<button onclick="mapZoom(0.5)">Zoom Out -</button> -->
 
-	<button id="loc_refresh" onclick="refreshLocation()">Refresh Location</button>
+	<div id="loc_refresh" onclick="refreshLocation()"></div>
 </div>
 
-<changeSrc id="create_wall" target="content_view" src="views/modWall.html">+ Create New Wall</changeSrc>
+<changeSrc id="create_wall" target="content_view" src="views/modWall.html">+ Create Wall</changeSrc>
 
 
 <script>
@@ -175,7 +194,7 @@ PINE.ready(function(){
 		width = map.offsetWidth;
 		height = map.offsetHeight;
 
-		degPerPx = 0.5 / Math.min(width, height);
+		degPerPx = 0.004 / Math.min(width, height);
 
 		halfWidthDLat = (degPerPx * width)/2;
 		halfHeightDLng = (degPerPx * height)/2;
@@ -350,8 +369,8 @@ PINE.ready(function(){
 				var wall_lat = U.attr(domNode, "lat");
 				var wall_lng = U.attr(domNode, "lng");
 
-				var xdeg = (wall_lat - plat) * 100;
-				var ydeg = (plng- wall_lng) * 100;
+				var xdeg = (wall_lat - plat) * 100 * 500; 
+				var ydeg = (plng- wall_lng) * 100 * 500;
 
 				// var x = (width/2) + ~~((wall_lat - loc.lat) / degPerPx);
 				// var y = (height/2) + ~~((wall_lng - loc.lng) / degPerPx);
@@ -398,8 +417,8 @@ PINE.ready(function(){
 	setInterval(updateMovement, 100)
 
 	function updateReadout() {
-		var latOut = ((loc.lat+mouse_dlat)+'').substring(0, 6);
-		var lngOut = ((loc.lng+mouse_dlng)+'').substring(0, 6);
+		var latOut = ((loc.lat+mouse_dlat)+'').substring(0, 10);
+		var lngOut = ((loc.lng+mouse_dlng)+'').substring(0, 10);
 		readout.innerHTML = latOut+", "+lngOut;
 	}
 

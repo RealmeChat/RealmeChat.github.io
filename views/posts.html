@@ -15,14 +15,14 @@
 	var wall = getQuery("wall") || 0;
 	var topic = getQuery("topic");
 
-	if(topic !== undefined) {
-		var topic_tag = SESSION_CACHE.topic_tags[topic];
-		document.getElementById("header").innerHTML += " for topic "+topic_tag;
-		document.getElementById("topic_tag").value = topic_tag;
-	}
-	else {
-		document.getElementById("header").innerHTML += " for all topics";
-	}
+	// if(topic !== undefined) {
+	// 	var topic_tag = SESSION_CACHE.topic_tags[topic];
+	// 	document.getElementById("header").innerHTML += " for topic "+topic_tag;
+	// 	document.getElementById("topic_tag").value = topic_tag;
+	// }
+	// else {
+	// 	document.getElementById("header").innerHTML += " for all topics";
+	// }
 
 	PINE.addEventListener("DOMContentLoaded", function() {
 	    
@@ -84,15 +84,20 @@
 
 
 
-<heading id="header">Posts</heading>
+
+<heading id="header">Posts for wall
+	<changeSrc id="topics" target="content_view" src="views/wallTopics.html?wall={{wall}}">#</changeSrc>
+</heading>
 
 <postlist spawner="posts" autoRun="false">
 	<post spawn>{{posts[i]}}</post>
 </postlist>
 
-<commentbox submitfn="addComment" placeholder="I think...">I think...</commentbox>
-Topic #<input id="topic_tag" type="textarea"></input>
+<div style="padding: 10px">
+	<commentbox submitfn="addComment" placeholder="I think...">I think...</commentbox>
+	Topic #<input id="topic_tag" type="textarea"></input>
 
-<button trigger="click" target="commentbox" fn="submit">
-	Submit
-</button>
+	<button trigger="click" target="commentbox" fn="submit">
+		Submit
+	</button>
+</div>

@@ -75,7 +75,8 @@ img {
 	outline : none;
 }
 
-button, #back_btn, #create_wall {
+button, #back_btn, #create_wall, #loc_refresh, #topics {
+    cursor: pointer;
     margin: 10px;
     padding: 10px;
     border-radius: 10px;
@@ -84,13 +85,13 @@ button, #back_btn, #create_wall {
 #back_btn {
     position: fixed;
     top: 0px;
-    background-color: #AAA;
-    color: #222;
     border: 1px solid rgba(0,0,0,0.3);
-    cursor: pointer;
+    /*cursor: pointer;*/
 }
 
+
 heading {
+    padding: 10px;
     display: block;
     height: 50px;
     font-size: 25px;
@@ -176,6 +177,8 @@ commentbox {
         document.getElementById("content_view").FNS.changeSrc.add(function(src) {
             var oldView = U.attr(this, "src");
 
+            back_btn.style.padding = "10px";
+
             if(src.indexOf("views/settings") != -1) {
                 back_btn.setAttribute("src", "views/map.html");
                 back_btn.innerHTML = "<- Map";
@@ -186,17 +189,20 @@ commentbox {
             }
             else if(src.indexOf("views/map") != -1) {
                 back_btn.setAttribute("src", "views/settings.html");
-                back_btn.innerHTML = "Settings";
+                back_btn.innerHTML = "<div id='settings_btn'></div>";
+                back_btn.style.padding = "0px";
             }
             else if(src.indexOf("views/wallTopics") != -1) {
-                back_btn.setAttribute("src", "views/map.html");
-                back_btn.innerHTML = "<- Map";
-            }
-            else if(src.indexOf("views/posts") != -1) {
                 back_btn.setAttribute("src", oldView);
                 back_btn.innerHTML = "<- Wall";
             }
+            else if(src.indexOf("views/posts") != -1) {
+                back_btn.setAttribute("src", "views/map.html");
+                back_btn.innerHTML = "<- Map";
+            }
         }, "before");
+
+        document.getElementById("content_view").FNS.changeSrc("views/map.html");
 
 
 
@@ -221,7 +227,7 @@ commentbox {
 
         <content>
             <!-- <button id="changePage" onclick="changePage()">Change Page</button> -->
-            <changeSrc id="back_btn" target="content_view" src="views/settings.html">Settings</changeSrc>
+            <changeSrc id="back_btn" target="content_view"></changeSrc>
             
             <include id="content_view" src="views/map.html"></include>
             
