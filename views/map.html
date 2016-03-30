@@ -96,7 +96,7 @@
 			lat="{{walls[i].wall_lat}}" 
 			lng="{{walls[i].wall_lng}}"
 			title="{{walls[i].wall_name}}">
-			<changeSrc target="content_view" src="Anonchat/views/wallTopics.html?wall={{walls[i].wall_id}}"></changeSrc>
+			<changeSrc target="content_view" src="views/wallTopics.html?wall={{walls[i].wall_id}}"></changeSrc>
 		</point>
 	</points>
 	<span id="readout"></span>
@@ -105,7 +105,7 @@
 	<button onclick="mapZoom(0.5)">Zoom Out -</button>
 </div>
 
-<changeSrc id="create_wall" target="content_view" src="Anonchat/views/modWall.html">+ Create New Wall</changeSrc>
+<changeSrc id="create_wall" target="content_view" src="views/modWall.html">+ Create New Wall</changeSrc>
 
 
 <script>
@@ -290,6 +290,7 @@ PINE.ready(function(){
 		target += "&max_lat="+max_lat;
 		target += "&min_lng="+min_lng;
 		target += "&max_lng="+max_lng;
+		target += "&ip="+SESSION_CACHE.ip;
 	    // var target = "http://localhost:8080/aardvark/wall/0/topic/0/posts";
 
 	    var request = new XMLHttpRequest();

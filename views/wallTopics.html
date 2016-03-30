@@ -81,15 +81,15 @@
 
 <heading>topics for wall_id:{{wall}}</heading>
 
-<changeSrc id="wall_admin" target="content_view" src="Anonchat/views/modWall.html?wall={{wall}}">Edit/Delete Wall</changeSrc>
+<changeSrc id="wall_admin" target="content_view" src="views/modWall.html?wall={{wall}}">Edit/Delete Wall</changeSrc>
 
 <topiclist spawner="posts" autoRun="false">
 	<!-- <post spawn>#{{posts[i].topic_tag}}</post> -->
 	<topic>
-		<changeSrc target="content_view" src="Anonchat/views/posts.html?wall={{wall}}">No Topic</changeSrc>
+		<changeSrc target="content_view" src="views/posts.html?wall={{wall}}">No Topic</changeSrc>
 	</topic>
 	<topic spawn>
-		<changeSrc target="content_view" src="Anonchat/views/posts.html?wall={{wall}}&topic={{posts[i].topic_id}}">#{{posts[i].topic_tag}}</changeSrc>
+		<changeSrc target="content_view" src="views/posts.html?wall={{wall}}&topic={{posts[i].topic_id}}">#{{posts[i].topic_tag}}</changeSrc>
 	</topic>
 </topiclist>
 
