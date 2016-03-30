@@ -3,3 +3,24 @@ body {
 	color: #2CE92C;
 	font-family: monospace;
 }
+
+
+#map {
+	background-color: #000;
+}
+
+
+#you {
+	background-color: #2CE92C;
+}
+
+#land_tiling {
+	background-image: url('public/images/line_tiling.png');
+	background-size: 20px;
+	filter: blur(1px);
+	opacity: 1.0;
+}
+
+peephole {
+	opacity: 0.6;
+}

@@ -77,6 +77,9 @@
 	border-radius: 6px;
 	border: 1px solid black;
 	line-height: 70px;
+	max-height: 90%;
+	overflow: scroll;
+	width: 80%;
 }
 
 iconitem {
@@ -106,10 +109,10 @@ iconitem:hover {
 
 <h2>Entrance</h2>
 
+Choose Icon:
+<span id="icon_preview" class="point_icon_0" onclick="showIconChooser()"></span><br>
 
-Icon: <span id="icon_preview" class="point_icon_0" onclick="showIconChooser()"></span><br>
-
-
+<!-- 
 <div style="opacity: 0.2">
 	Password:<br>
 
@@ -120,7 +123,7 @@ Icon: <span id="icon_preview" class="point_icon_0" onclick="showIconChooser()"><
 
 	<h2>Settings</h2>
 	Rollover count<br>
-</div>
+</div> -->
 Wall name: <input id="wall_name" type="textarea" placeholder="Some Place"></input>
 
 <button id="create_wall" onclick="submitWall()">Create</button>

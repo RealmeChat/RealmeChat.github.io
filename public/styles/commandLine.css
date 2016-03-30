@@ -13,6 +13,11 @@ commentbox {
 	background-color: #248647;
 }
 
+#land_tiling {
+	opacity: 0.05;
+	filter: none;
+}
+
 peephole {
 	opacity: 0.4;
 	filter: invert(95%);

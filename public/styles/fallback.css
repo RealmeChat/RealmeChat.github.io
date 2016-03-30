@@ -8,10 +8,17 @@ body {
 	background-color: #AFA;
 }
 
+#you {
+	background-color: #222;
+}
+
 #land_tiling {
 	background-image: url('../images/tiling.png');
 	background-size: 25px;
+	opacity: 0.3;
+	filter: invert(100%);
 }
+
 
 point {
 	/*background-color: #804;*/
