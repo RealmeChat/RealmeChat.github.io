@@ -286,8 +286,9 @@ PINE.ready(function(){
 			setLocation(position.coords.latitude, position.coords.longitude)
 			updatePointPositions();
 		},
-		function() {
+		function(err) {
 			alert("could not get position");
+			alert(err.message);
 		});
 	}
 
