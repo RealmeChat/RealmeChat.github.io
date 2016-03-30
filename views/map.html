@@ -285,6 +285,9 @@ PINE.ready(function(){
 		navigator.geolocation.getCurrentPosition(function(position){
 			setLocation(position.coords.latitude, position.coords.longitude)
 			updatePointPositions();
+		},
+		function() {
+			alert("could not get position");
 		});
 	}
 
