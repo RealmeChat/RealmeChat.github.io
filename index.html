@@ -121,9 +121,12 @@ commentbox {
 
 
 
-
-    if(window.location.href.indexOf("file://") != -1)
+    if(U.getCookie("run_local") == "true")
         PATH_TO_SERVER = "http://localhost:8080";
+
+
+    // if(window.location.href.indexOf("file://") != -1)
+    //     PATH_TO_SERVER = "http://localhost:8080";
 
 
     var style_include_cookie = U.getCookie("style_include") || "public/styles/empty.css";
