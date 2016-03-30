@@ -101,8 +101,10 @@
 	</points>
 	<span id="readout"></span>
 	<br><br><br><br>
-	<button onclick="mapZoom(2)">Zoom In +</button><br>
-	<button onclick="mapZoom(0.5)">Zoom Out -</button>
+	<!-- <button onclick="mapZoom(2)">Zoom In +</button><br>
+	<button onclick="mapZoom(0.5)">Zoom Out -</button> -->
+
+	<button onclick="refreshLocation()">Refresh Location</button>
 </div>
 
 <changeSrc id="create_wall" target="content_view" src="views/modWall.html">+ Create New Wall</changeSrc>
@@ -130,6 +132,9 @@ var points = El.byId("points");
 var land_tiling = El.byId("land_tiling");
 
 function mapZoom(scale) {
+	console.log("map zoom currently disabled");
+	return;
+
 	console.log(points.style.width)
 
 	points.style.width = (parseInt(points.style.width) * scale)+'%';
@@ -142,6 +147,8 @@ function mapZoom(scale) {
 
 var walls = [];// = [ { wall_lat: 30.5, wall_lng: -97.5 } ];
 
+
+// refreshLocation;/
 
 
 
@@ -261,9 +268,17 @@ PINE.ready(function(){
 
 	setLocation(30, -97);
 
-	navigator.geolocation.getCurrentPosition(function(position){
-		setLocation(position.coords.latitude, position.coords.longitude)
-	});
+	refreshLocation = function() {
+		navigator.geolocation.getCurrentPosition(function(position){
+			setLocation(position.coords.latitude, position.coords.longitude)
+			updatePointPositions();
+		});
+	}
+
+
+	refreshLocation();
+
+	
 
 	function setLocation(i_lat, i_lng) {
 		loc.lat = i_lat;
@@ -352,7 +367,6 @@ PINE.ready(function(){
 					
 			}
 		}
-
 	}
 
 	

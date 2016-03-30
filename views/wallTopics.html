@@ -53,6 +53,9 @@
 	    request.send();
 	});
 
+	if(U.getCookie("run_local") == "true") {
+		El.byId("wall_admin").style.display = "inherit";
+	}
 
 </script>
 
@@ -69,6 +72,7 @@
 	}
 
 	#wall_admin {
+		display: none;
 		position: fixed;
 		top: 0px;
 		right: 0px;

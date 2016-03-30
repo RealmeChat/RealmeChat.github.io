@@ -16,6 +16,7 @@
 
 
 	var icon_chooser = document.getElementById("icon_chooser");
+	icon_chooser.value = 0;
 	function showIconChooser() {
 		icon_chooser.FNS.show();
 	}
@@ -26,6 +27,7 @@
 
 		document.getElementById("icon_preview").className = "point_icon_"+index;
 	}
+	// setIcon(0);
 
 	function submitWall() {
 		var wall_name = El.byId("wall_name").value;
