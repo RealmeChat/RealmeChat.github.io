@@ -41,6 +41,11 @@ peephole{
 	opacity: 0.3;
 }
 
+commentbox {
+	background-color: white;
+	border: 1px solid black;
+}
+
 
 /* a tree */
 /* for trees people sit under, or find value in being around*/
