@@ -280,16 +280,28 @@ PINE.ready(function(){
 	*****************/
 
 	setLocation(30, -97);
+	// setLocation(30.29825, -97.64311);
+
+	
 
 	refreshLocation = function() {
+		var options = {
+		  	enableHighAccuracy: true,
+		  	timeout: 5000,
+		  	maximumAge: 0
+		};
+
 		navigator.geolocation.getCurrentPosition(function(position){
 			setLocation(position.coords.latitude, position.coords.longitude)
 			updatePointPositions();
 		},
 		function(err) {
-			alert("could not get position lalal");
-			alert(err.message);
-		});
+			var out = "It appears you've blocked geolocation.  If you'd like to try this prototype app ";
+			out += "with geolocating enabled: \n";
+			out += "On iOS safari: Settings->General->Reset->Reset Location Warnings\n";
+			out += "On iOS safari: Settings->General->Reset->Reset Location Warnings\n";
+		},
+		options);
 	}
 
 
@@ -395,19 +407,21 @@ PINE.ready(function(){
 
 		// console.log(lat +" "+lng);
 
+
 		var dlat = 0, dlng = 0;
+		var speed = 0.1;
 
 		if( keysPressed["ArrowUp"] )
-			dlng += 0.01
+			dlng += speed
 
 		if( keysPressed["ArrowDown"] ) 
-			dlng -= 0.01
+			dlng -= speed
 
 		if( keysPressed["ArrowLeft"] )
-			dlat -= 0.01
+			dlat -= speed
 
 		if( keysPressed["ArrowRight"] )
-			dlat += 0.01
+			dlat += speed
 
 		if(dlat || dlng) {
 			loc.lat += dlat;
