@@ -1,11 +1,18 @@
 body {  
-	background-color: #FAFAFA;  
+	/*background-color: #FAFAFA;  */
 	font-family: arial;
-	color: #333;
+	/*color: #333;*/
+	background-color: #C6FBDD;  
+	color: #262123;
+}
+
+heading {
+	background-color: #FC814A;
 }
 
 #map {
-	background-color: #AFA;
+	/*background-color: #AFA;*/
+	background-color: #2AC830;
 }
 
 #you {
@@ -15,7 +22,7 @@ body {
 #land_tiling {
 	background-image: url('../images/tiling.png');
 	background-size: 25px;
-	opacity: 0.3;
+	opacity: 0.1;
 	filter: invert(100%);
 }
 
@@ -54,83 +61,113 @@ peephole{
 	background-image: url("../images/icons/map_sets/testing/womens_room.png")
 }
 
+
+.point_icon_4 {
+	background-image: url("../images/icons/map_sets/testing/angry_emoji.png")
+}
+
+.point_icon_5 {
+	background-image: url("../images/icons/map_sets/testing/flirty_emoji.png")
+}
+
+.point_icon_6 {
+	background-image: url("../images/icons/map_sets/testing/goofy_emoji.png")
+}
+
+
+.point_icon_7 {
+	background-image: url("../images/icons/map_sets/testing/sad_emoji.png")
+}
+
+.point_icon_8 {
+	background-image: url("../images/icons/map_sets/testing/shark.png")
+}
+
+.point_icon_9 {
+	background-image: url("../images/icons/map_sets/testing/donkey.png")
+}
+
+.point_icon_10 {
+	background-image: url("../images/icons/map_sets/testing/pig.png")
+}
+
 /* a bench */
 /* could be bus stops, or park benches, or benches in general*/
-.point_icon_4 {
+.point_icon_11 {
 	background-image: url("../images/icons/map_sets/testing/bench.png")
 }
 
 /* message in a bottle */
 /* for posts made in water, or that simply float about */
-.point_icon_5 {
+/*.point_icon_5 {
 	background-image: url("../images/icons/map_sets/testing/message_in_a_bottle.png")
-}
+}*/
 
 
 /* a duck */
 /* no good */
-.point_icon_6 {
+/*.point_icon_6 {
 	background-image: url("../images/icons/map_sets/testing/duck.png")
-}
+}*/
 
 
 /* a pizza place icon */
-.point_icon_7 {
+/*.point_icon_7 {
 	background-image: url("../images/icons/map_sets/testing/pizza_place.png")
-}
+}*/
 
 /* an italian restaurant icon */
-.point_icon_8 {
+/*.point_icon_8 {
 	background-image: url("../images/icons/map_sets/testing/italian_restaurant.png")
-}
+}*/
 
 
 /* an amplified music place */
 /* more aimed at clubs and raves than live music */
-.point_icon_9 {
+/*.point_icon_10 {
 	background-image: url("../images/icons/map_sets/testing/sound_system.png")
 }
-
+*/
 
 /* an anonymizing mask icon */
 /* the mask keeps peoples identies safe */
-.point_icon_10 {
+.point_icon_12 {
 	background-image: url("../images/icons/map_sets/testing/anonymous_mask.png")
 }
 
 
 /* an anarchic icon */
-.point_icon_11 {
+/*.point_icon_11 {
 	background-image: url("../images/icons/map_sets/testing/anarchy.png")
-}
+}*/
 
 
 /* a book place icon */
 /* for bookstores and libraries, and anywhere you like to read */
 /* try to keep it to one or a few books, rather than a book case */
-.point_icon_12 {
+.point_icon_13 {
 	background-image: url("../images/icons/map_sets/testing/book_place.png")
 }
 
 
 /* a place of zen icon */
 /* for places where people find zen.  meditative spaces. yoga, meditation, hippies... */
-.point_icon_13 {
+.point_icon_14 {
 	background-image: url("../images/icons/map_sets/testing/meditation_space.jpg")
 }
 
 
 /* a smoking space icon */
 /* you can tell by all the smoke */
-.point_icon_14 {
+.point_icon_15 {
 	background-image: url("../images/icons/map_sets/testing/smoking.png")
 }
 
 /* a health place icon */
 /* hospitals, vets, and pharmacies.  could also be the location of a death */
-.point_icon_15 {
+/*.point_icon_15 {
 	background-image: url("../images/icons/map_sets/testing/hospital.png")
-}
+}*/
 
 
 /* a trained musician place */

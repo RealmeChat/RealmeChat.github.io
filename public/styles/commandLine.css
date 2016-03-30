@@ -8,6 +8,9 @@ commentbox {
 	color: #0FA;
 }
 
+heading {
+	background-color: #15AA9A;
+}
 
 #map {
 	background-color: #248647;
@@ -21,6 +24,5 @@ commentbox {
 peephole {
 	opacity: 0.4;
 	filter: invert(95%);
-
 	background-image: url('public/images/cloud_peephole.png');
 }

@@ -53,7 +53,7 @@
 	    request.send();
 	});
 
-	if(U.getCookie("run_local") == "true") {
+	if(U.getCookie("admin") == "true") {
 		El.byId("wall_admin").style.display = "inherit";
 	}
 
@@ -83,7 +83,7 @@
 	}
 </style>
 
-<heading>topics for wall_id:{{wall}}</heading>
+<heading>Topics for wall</heading>
 
 <changeSrc id="wall_admin" target="content_view" src="views/modWall.html?wall={{wall}}">Edit/Delete Wall</changeSrc>
 

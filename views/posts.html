@@ -82,14 +82,16 @@
 
 </script>
 
+
+
 <heading id="header">Posts</heading>
 
 <postlist spawner="posts" autoRun="false">
 	<post spawn>{{posts[i]}}</post>
 </postlist>
 
-<commentbox submitfn="addComment" placeholder="I think..."></commentbox>
-#<input id="topic_tag" type="textarea"></input>
+<commentbox submitfn="addComment" placeholder="I think...">I think...</commentbox>
+Topic #<input id="topic_tag" type="textarea"></input>
 
 <button trigger="click" target="commentbox" fn="submit">
 	Submit

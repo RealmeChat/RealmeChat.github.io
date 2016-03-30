@@ -4,8 +4,8 @@
 		-moz-appearance: textfield-multiline;
 	    -webkit-appearance: textarea;
 	    overflow: auto;
-	    padding: 2px;
-	    resize: both;
+	    padding: 10px;
+	    resize: none;
 	}
 </style>
 
@@ -25,6 +25,18 @@ PINE.createNeedle("commentbox").addFunction({
 			initMe.innerHTML = '';
 		});
 
+		var placeholder = U.attr(initMe, "placeholder")
+		initMe.innerHTML = placeholder;
+		initMe.style.color = "rgba(120, 120, 120, 0.5";
+
+
+		initMe.addEventListener("focus", function(e) {
+			if(initMe.innerHTML == placeholder)
+				initMe.innerHTML = "";
+
+			initMe.style.color = "inherit";
+			
+		});
 		// initMe.addEventListener("keypress", function(event) {
 		// 	if(event.keyCode == 13) {
 		// 		initMe.FNS.submit();

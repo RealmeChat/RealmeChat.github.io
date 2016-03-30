@@ -21,6 +21,17 @@ body {
 	opacity: 1.0;
 }
 
+heading {
+	background-color: #2CE92C;
+	color: #000;
+	background-image: url('public/images/line_tiling.png');
+	background-size: 20px;
+}
+
+commentbox {
+	border: 1px solid #2CE92C;
+}
+
 peephole {
 	opacity: 0.6;
 }
