@@ -8,13 +8,16 @@
 
 <style>
 	stylelink changeSrc {
-		display: block;
+		display: inline-block;
 		height: 40px;
-		border-bottom: 1px solid black;
+		border: 1px solid black;
+		padding: 10px;
+		border-radius: 10px;
+		background-color: rgba(120, 120, 120, 0.4);
 	}
 
 	stylelink changeSrc:hover {
-		background-color: rgba(120,120,120,0.4);
+		background-color: rgba(120,250,120,0.4);
 	}
 </style>
 
@@ -24,7 +27,7 @@
 	<stylelink spawn>
 		<changeSrc target="style_include" src="public/styles/{{styleFilenames[i]}}">
 			{{styleFilenames[i]}}
-		</changeSrc>
+		</changeSrc><br>
 	</stylelink>
 </stylelist>
 
