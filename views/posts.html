@@ -65,8 +65,8 @@
 
 
 	function addComment(addMe) {
-		if(addMe == "") return;
-		
+		if(addMe == "" || addMe == "I think...") return;
+
         posts.push(addMe);
 
         $("postlist")[0].FNS.update();
