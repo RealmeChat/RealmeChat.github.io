@@ -2,11 +2,29 @@ body {
 	background-color: black;
 	color: #2CE92C;
 	font-family: monospace;
+
 }
 
 
+button, #back_btn, #create_wall, #loc_refresh, #topics {
+	background-color: #000;
+	color: #2CE92C;
+	border: 1px solid #2CE92C;
+	overflow: hidden;
+}
+
+heading {
+	background-color: #2CE92C;
+	color: #000;
+	font-size: 15px;
+}
+
 #map {
 	background-color: #000;
+}
+
+#settings_btn, #loc_refresh {
+	background-color: #2CE92C;
 }
 
 
