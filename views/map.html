@@ -298,8 +298,10 @@ PINE.ready(function(){
 		function(err) {
 			var out = "It appears you've blocked geolocation.  If you'd like to try this prototype app ";
 			out += "with geolocating enabled: \n";
+			out += "On Android Firefox: You're awesome.  Settings->Privacy->Clear Private Data-> Just check 'Site Settings'\n";
 			out += "On iOS safari: Settings->General->Reset->Reset Location Warnings\n";
-			out += "On iOS safari: Settings->General->Reset->Reset Location Warnings\n";
+			out += "On Android Chrome: Settings->Show Advanced Settings->Reset Settings->Reset\n";
+			alert(out);
 		},
 		options);
 	}
