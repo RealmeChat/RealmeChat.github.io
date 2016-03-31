@@ -12,16 +12,29 @@
         #map { position:absolute; top:0; bottom:0; width:100%; }
         .mapbox-improve-map { display: none }
 
-        #clouds {
+        #clouds, #skylight {
             position: absolute;
             top: 0px;
             height: 100%;
             width: 100%;
+            pointer-events: none;
+        }
+
+        #clouds {
             background-image: url("../public/images/cloud_border.png");
             background-size: 200% 200%;
             background-position: center;
-            pointer-events: none;
-            /*transition: background-size ease 0.2s;*/
+        }
+
+        #skylight {
+            /*background-color: black;*/
+            /*opacity: 0.2;*/
+            transition: background-color ease 2s;
+        }
+
+        button {
+            position: relative;
+            z-index: 20;
         }
     </style>
 </head>
@@ -29,7 +42,28 @@
 
 <div id='map'></div>
 <div id="clouds"></div>
+<div id="skylight"></div>
+<button onclick="night()">night</button>
+<button onclick="sunset()">sunset</button>
+<button onclick="midday()">midday</button>
 <script>
+
+
+
+var e_skylight = El.byId("skylight");
+function night() {
+    e_skylight.style.backgroundColor = "rgba(10,0,25,0.7)"
+}
+
+function sunset() {
+    e_skylight.style.backgroundColor = "rgba(197, 84, 39, 0.3)"
+}
+
+function midday() {
+    e_skylight.style.backgroundColor = "inherit"
+}
+
+
 
 PATH_TO_SERVER = "http://108.238.241.202:8080";
 
@@ -217,6 +251,9 @@ var map = new mapboxgl.Map({
     maxBounds: bounds 
 });
 
+map.dragRotate.disable();
+map.touchZoomRotate.disableRotation();
+
 
 // map.on('style.load', function() {
 //     map.addSource("clouds", {
@@ -257,10 +294,9 @@ map.on("zoom", function(event) {
 
 
 
-// map.dragRotate.disable();
 
 // disable map rotation using touch rotation gesture
-// map.touchZoomRotate.disableRotation();
+
 
 
 
