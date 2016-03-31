@@ -36,6 +36,17 @@
             position: relative;
             z-index: 20;
         }
+
+        #map {
+            /*filter: saturate(2);*/
+        }
+
+        .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
+            position: relative;
+            z-index: 10;
+            background-color: transparent;
+            font-size: 10px;
+        }
     </style>
 </head>
 <body>
@@ -43,20 +54,39 @@
 <div id='map'></div>
 <div id="clouds"></div>
 <div id="skylight"></div>
-<button onclick="night()">night</button>
-<button onclick="sunset()">sunset</button>
-<button onclick="midday()">midday</button>
+<!-- <button onclick="skylight(24)">night</button>
+<button onclick="skylight(18)">sunset</button>
+<button onclick="skylight(13)">midday</button>
+<button onclick="skylight(7)">sunrise</button>
+<button onclick="skylight(-1)">rainyday</button> -->
 <script>
 
 
 
+
 var e_skylight = El.byId("skylight");
+function skylight(time) {
+    if(time == 24)
+        e_skylight.style.backgroundColor = "rgba(10,0,25,0.7)"
+
+    else if(time == 18)
+        e_skylight.style.backgroundColor = "rgba(197, 134, 39, 0.3)"
+
+    else if(time == 13)
+        e_skylight.style.backgroundColor = "rgba(197, 134, 39, 0.1)"
+
+    else if(time == 7)
+        e_skylight.style.backgroundColor = "inherit"
+
+    else if(time == -1)
+        e_skylight.style.backgroundColor = "rgba(108, 108, 108, 0.3)"
+}
 function night() {
-    e_skylight.style.backgroundColor = "rgba(10,0,25,0.7)"
+    
 }
 
 function sunset() {
-    e_skylight.style.backgroundColor = "rgba(197, 84, 39, 0.3)"
+    
 }
 
 function midday() {
@@ -78,6 +108,66 @@ var bounds;
 var marker_source_count = 0;
 
 
+var walls = {};
+
+function addWalls(addUs) {
+    var addUs = addUs;
+
+    for(var ad in addUs) {
+        var addMe = addUs[ad];
+        if(walls[addMe.wall_id] == undefined)
+            walls[addMe.wall_id] = addMe;    
+    }
+}
+
+
+var icon_radius = 0.00005;
+function showWalls() {
+    console.log("showing walls");
+
+    for(var wa in walls) {
+        var addMe = walls[wa];
+
+        if(addMe.added != true) {
+            var lat = parseFloat(addMe.wall_lat),
+                lng = parseFloat(addMe.wall_lng),
+                name = addMe.wall_name;
+
+            var E = lng - icon_radius,
+                W = lng + icon_radius,
+                N = lat + icon_radius,
+                S = lat - icon_radius;
+
+            console.log(E, W, N, S);
+
+            var imgSrc = "http://realmechat.github.io/public/images/icons/map_sets/retro_pixel/pixel_tree.png";
+            // var imgSrc = "/public/images/icons/map_sets/retro_pixel/pixel_tree.png";
+
+            map.addSource(name, {
+                "type": "image",
+                "url": imgSrc,
+                "coordinates": [
+                    [W, N],
+                    [E, N],
+                    [E, S],
+                    [W, S]
+                ]
+            });
+
+            map.addLayer({
+                "id": name+"_icon",
+                "source": name,
+                "type": "raster",
+                // "paint": {"raster-opacity": 0.85}
+            });
+
+        }
+        addMe.added = true;
+    }
+}
+
+
+
 
 
 function setLocation(i_lng, i_lat) {
@@ -91,9 +181,8 @@ function setLocation(i_lng, i_lat) {
 
 
     if(map) {
-        map.setCenter(position);
         map.setMaxBounds(bounds);
-
+        map.setCenter(position);
     }
 
     getPoints();
@@ -106,8 +195,6 @@ setLocation(-97.754072, 30.262567);
 refreshLocation = function() {
     navigator.geolocation.getCurrentPosition(function(position){
         setLocation(position.coords.longitude, position.coords.latitude)
-        // updatePointPositions();
-    
     });
 }
 
@@ -115,32 +202,34 @@ refreshLocation = function() {
 refreshLocation();
 
 
-function createMarkerSource(walls) {
-    var output = {};
-    output.type = "geojson";
-    output.data = {};
-    output.data.type = "FeatureCollection";
-    output.data.features = [];
+// function createMarkerSource(walls) {
+//     var output = {};
+//     output.type = "geojson";
+//     output.data = {};
+//     output.data.type = "FeatureCollection";
+//     output.data.features = [];
 
-    for (var wa in walls) {
-        var wall = walls[wa];
+//     for (var wa in walls) {
+//         var wall = walls[wa];
 
-        var addMe = {};
-        addMe.type = "Feature";
+//         var addMe = {};
+//         addMe.type = "Feature";
 
-        addMe.geometry = {};
-        addMe.geometry.type = "Point";
-        addMe.geometry.coordinates = [wall.wall_lng, wall.wall_lat];
+//         addMe.geometry = {};
+//         addMe.geometry.type = "Point";
+//         addMe.geometry.coordinates = [wall.wall_lng, wall.wall_lat];
 
-        addMe.properties = {};
-        addMe.properties.title = wall.wall_name;
-        addMe.properties["marker-symbol"] = "monument";
+//         addMe.properties = {};
+//         addMe.properties.title = wall.wall_name;
+//         addMe.properties["marker-symbol"] = "monument";
 
-        output.data.features.push(addMe);
-    }
+//         output.data.features.push(addMe);
+//     }
 
-    return output;
-}
+//     return output;
+// }
+
+
 
 
 
@@ -187,36 +276,39 @@ function getPoints()  {
             //     var addMe = L.marker([wall.wall_lng, wall.wall_lat])
             //     addMe.addTo(map);
             // }
+            addWalls(data.vals);
+            showWalls();
+            // if(marker_source_count == 0)
+            //     map.on('style.load', showWalls);
+            // else
+            //     showWalls();
 
-            var marker_source = createMarkerSource(data.vals);
+            // var marker_source = createMarkerSourceForWalls(data.vals);
 
-            function addMarkerSource() {
+            // function addMarkerSource() {
 
-                var name = "markers-"+marker_source_count;
-                marker_source_count++;
+            //     var name = "markers-"+marker_source_count;
+            //     marker_source_count++;
 
-                map.addSource(name, marker_source);
+            //     map.addSource(name, marker_source);
 
-                map.addLayer({
-                    "id": name,
-                    "type": "symbol",
-                    "source": name,
-                    "layout": {
-                        "icon-image": "{marker-symbol}-15",
-                        "text-field": "{title}",
-                        "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-                        "text-offset": [0, 0.6],
-                        "text-anchor": "top"
-                    }
-                });
-            }
+            //     map.addLayer({
+            //         "id": name,
+            //         "type": "symbol",
+            //         "source": name,
+            //         "layout": {
+            //             "icon-image": "{marker-symbol}-15",
+            //             "text-field": "{title}",
+            //             "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            //             "text-offset": [0, 0.6],
+            //             "text-anchor": "top"
+            //         }
+            //     });
+            // }
 
             
 
-            if(marker_source_count == 0)
-                map.on('style.load', addMarkerSource);
-            else
-                addMarkerSource();
+            
 
             // map.load(addMarkerSource);
 
