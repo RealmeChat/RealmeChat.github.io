@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title></title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.js'></script>
+    <script src="http://sephreed.github.io/PINE/PINE_Core.js"></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body { height: 100%; margin:0; padding:0; }
+        #map { position:absolute; top:0; bottom:0; width:100%; }
+        .mapbox-improve-map { display: none }
+
+        #clouds {
+            position: absolute;
+            top: 0px;
+            height: 100%;
+            width: 100%;
+            background-image: url("../public/images/cloud_border.png");
+            background-size: 200% 200%;
+            background-position: center;
+            pointer-events: none;
+            /*transition: background-size ease 0.2s;*/
+        }
+    </style>
+</head>
+<body>
+
+<div id='map'></div>
+<div id="clouds"></div>
+<script>
+
+PATH_TO_SERVER = "http://108.238.241.202:8080";
+
+if(U.getCookie("run_local") == "true")
+    PATH_TO_SERVER = "http://localhost:8080";
+
+
+var viewDist = 0.002;
+// var viewDist = 1.0;
+var position = [];
+var bounds;
+var marker_source_count = 0;
+
+
+
+
+function setLocation(i_lng, i_lat) {
+    position[0] = i_lng;
+    position[1] = i_lat;
+    
+    bounds = [
+        [position[0]-viewDist, position[1]-viewDist], // Southwest coordinates
+        [position[0]+viewDist, position[1]+viewDist]  // Northeast coordinates
+    ];
+
+
+    if(map) {
+        map.setCenter(position);
+        map.setMaxBounds(bounds);
+
+    }
+
+    getPoints();
+}
+
+
+setLocation(-97.754072, 30.262567);
+
+
+refreshLocation = function() {
+    navigator.geolocation.getCurrentPosition(function(position){
+        setLocation(position.coords.longitude, position.coords.latitude)
+        // updatePointPositions();
+    
+    });
+}
+
+
+refreshLocation();
+
+
+function createMarkerSource(walls) {
+    var output = {};
+    output.type = "geojson";
+    output.data = {};
+    output.data.type = "FeatureCollection";
+    output.data.features = [];
+
+    for (var wa in walls) {
+        var wall = walls[wa];
+
+        var addMe = {};
+        addMe.type = "Feature";
+
+        addMe.geometry = {};
+        addMe.geometry.type = "Point";
+        addMe.geometry.coordinates = [wall.wall_lng, wall.wall_lat];
+
+        addMe.properties = {};
+        addMe.properties.title = wall.wall_name;
+        addMe.properties["marker-symbol"] = "monument";
+
+        output.data.features.push(addMe);
+    }
+
+    return output;
+}
+
+
+
+
+function getPoints()  {
+    
+    
+    var min_lng = bounds[0][0];
+    var min_lat = bounds[0][1];
+
+    
+    var max_lng = bounds[1][0];
+    var max_lat = bounds[1][1];
+
+
+
+    // var target = "http://localhost:8080/aardvark/walls"
+    var target = PATH_TO_SERVER+"/aardvark/walls"
+    target += "?min_lat="+min_lat;
+    target += "&max_lat="+max_lat;
+    target += "&min_lng="+min_lng;
+    target += "&max_lng="+max_lng;
+    // target += "&ip="+SESSION_CACHE.ip;
+    target += "&ip=1.1.1.1";
+    // var target = "http://localhost:8080/aardvark/wall/0/topic/0/posts";
+
+    var request = new XMLHttpRequest();
+    // request.responseType = 'text';
+    request.open('GET', target, true);
+
+    request.onload = function() {
+        if (request.status >= 200 && request.status < 400) {
+            // Success!
+            var response = request.responseText;
+            console.log(response);
+            var data = JSON.parse(response);
+            console.log(data);
+            console.log(data.name);
+
+            // var walls = data.vals;
+
+            // for(var wa in walls) {
+            //     var wall = walls[wa];
+            //     var addMe = L.marker([wall.wall_lng, wall.wall_lat])
+            //     addMe.addTo(map);
+            // }
+
+            var marker_source = createMarkerSource(data.vals);
+
+            function addMarkerSource() {
+
+                var name = "markers-"+marker_source_count;
+                marker_source_count++;
+
+                map.addSource(name, marker_source);
+
+                map.addLayer({
+                    "id": name,
+                    "type": "symbol",
+                    "source": name,
+                    "layout": {
+                        "icon-image": "{marker-symbol}-15",
+                        "text-field": "{title}",
+                        "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+                        "text-offset": [0, 0.6],
+                        "text-anchor": "top"
+                    }
+                });
+            }
+
+            
+
+            if(marker_source_count == 0)
+                map.on('style.load', addMarkerSource);
+            else
+                addMarkerSource();
+
+            // map.load(addMarkerSource);
+
+
+        } else {
+            // We reached our target server, but it returned an error
+            alert("include src '"+target+"' does not exist")
+        }
+    };
+
+
+
+    request.onerror = function() {
+        // There was a connection error of some sort
+        alert("include src '"+target+"' does not exist")
+    };
+
+    request.send();
+
+}
+
+
+
+
+
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2VwaHJlZWQiLCJhIjoiY2ltY2swaHp5MDAwcnVmbHZueDJ0b3JuYiJ9.2On-Ezp_IskFR_Vpn9JrHA';
+var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/sephreed/cimckh1zj00cj9lm1ch93zx6q', //hosted style id
+    center: position, // starting position
+    zoom: 19, // starting zoom
+    maxBounds: bounds 
+});
+
+
+map.on('style.load', function() {
+    map.addSource("clouds", {
+        "type": "image",
+        "url": "http://realmechat.github.io/public/images/cloud_border.png",
+        "coordinates": [
+            [bounds[0][0], bounds[1][1]],
+            [bounds[1][0], bounds[1][1]],
+            [bounds[1][0], bounds[0][1]],
+            [bounds[0][0], bounds[0][1]]
+        ]
+    });
+
+    map.addLayer({
+        "id": "clouds",
+        "source": "clouds",
+        "type": "raster",
+        // "paint": {"raster-opacity": 0.85}
+    });
+});
+
+map.on("zoom", function(event) {
+    var sw = map.getBounds()._sw;
+    var ne = map.getBounds()._ne;
+    var dlng = ne.lng - sw.lng;
+    var dlat = ne.lat - sw.lat;
+
+    var fillAmount = (Math.max(dlat, dlng)/0.004);
+    fillAmount = Math.pow(fillAmount, 2);
+    var percent = ((1.5-(fillAmount/2))*100) + '%';
+
+    El.byId("clouds").style.backgroundSize = percent+" "+percent;
+    // console.log(percent);
+
+    // var bound_width = bound[1][0] - bounds[0][0];
+    // var bound_height = bound[1][0] - bounds[0][0];
+});
+
+
+
+map.dragRotate.disable();
+
+// disable map rotation using touch rotation gesture
+map.touchZoomRotate.disableRotation();
+
+
+
+
+</script>
+
+</body>
+</html>
