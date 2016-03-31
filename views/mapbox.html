@@ -218,31 +218,31 @@ var map = new mapboxgl.Map({
 });
 
 
-map.on('style.load', function() {
-    map.addSource("clouds", {
-        "type": "image",
-        "url": "http://realmechat.github.io/public/images/cloud_border.png",
-        "coordinates": [
-            [bounds[0][0], bounds[1][1]],
-            [bounds[1][0], bounds[1][1]],
-            [bounds[1][0], bounds[0][1]],
-            [bounds[0][0], bounds[0][1]]
-        ]
-    });
+// map.on('style.load', function() {
+//     map.addSource("clouds", {
+//         "type": "image",
+//         "url": "http://realmechat.github.io/public/images/cloud_border.png",
+//         "coordinates": [
+//             [bounds[0][0], bounds[1][1]],
+//             [bounds[1][0], bounds[1][1]],
+//             [bounds[1][0], bounds[0][1]],
+//             [bounds[0][0], bounds[0][1]]
+//         ]
+//     });
 
-    map.addLayer({
-        "id": "clouds",
-        "source": "clouds",
-        "type": "raster",
-        // "paint": {"raster-opacity": 0.85}
-    });
-});
+//     map.addLayer({
+//         "id": "clouds",
+//         "source": "clouds",
+//         "type": "raster",
+//         // "paint": {"raster-opacity": 0.85}
+//     });
+// });
 
 map.on("zoom", function(event) {
     var sw = map.getBounds()._sw;
     var ne = map.getBounds()._ne;
-    var dlng = ne.lng - sw.lng;
-    var dlat = ne.lat - sw.lat;
+    var dlng = Math.abs(ne.lng - sw.lng);
+    var dlat = Math.abs(ne.lat - sw.lat);
 
     var fillAmount = (Math.max(dlat, dlng)/0.004);
     fillAmount = Math.pow(fillAmount, 2);
@@ -257,10 +257,10 @@ map.on("zoom", function(event) {
 
 
 
-map.dragRotate.disable();
+// map.dragRotate.disable();
 
 // disable map rotation using touch rotation gesture
-map.touchZoomRotate.disableRotation();
+// map.touchZoomRotate.disableRotation();
 
 
 
