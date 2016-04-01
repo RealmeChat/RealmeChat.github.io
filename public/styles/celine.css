@@ -1,0 +1,54 @@
+body {
+	background-color: black;
+	color: #F0F;
+	font-family: monospace;
+
+}
+
+
+button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall, commentbox, input, .btn {
+	background-color: #000;
+	color: #F0F;
+	border: 1px solid #F0F;
+}
+
+heading {
+	background-color: #F0F;
+	color: #000;
+	font-size: 15px;
+}
+
+#map {
+	background-color: #000;
+}
+
+#settings_btn, #loc_refresh {
+	background-color: #F0F;
+}
+
+
+#you {
+	background-color: #F0F;
+}
+
+#land_tiling {
+	background-image: url('public/images/line_tiling.png');
+	background-size: 20px;
+	filter: blur(1px);
+	opacity: 1.0;
+}
+
+heading {
+	background-color: #F0F;
+	color: #000;
+	background-image: url('public/images/line_tiling.png');
+	background-size: 20px;
+}
+
+commentbox {
+	border: 1px solid #F0F;
+}
+
+peephole {
+	opacity: 0.6;
+}
