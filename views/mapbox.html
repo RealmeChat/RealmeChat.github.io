@@ -6,6 +6,11 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.js'></script>
     <script src="http://sephreed.github.io/PINE/PINE_Core.js"></script>
+
+    <script src="../public/images/icons/map_sets/icon_define.js"></script>
+    <script src="../public/images/icons/map_sets/testing/icon_setup.js"></script>
+
+
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.16.0/mapbox-gl.css' rel='stylesheet' />
     <style>
         body { height: 100%; margin:0; padding:0; }
@@ -81,24 +86,16 @@ function skylight(time) {
     else if(time == -1)
         e_skylight.style.backgroundColor = "rgba(108, 108, 108, 0.3)"
 }
-function night() {
-    
-}
-
-function sunset() {
-    
-}
-
-function midday() {
-    e_skylight.style.backgroundColor = "inherit"
-}
 
 
 
 PATH_TO_SERVER = "http://108.238.241.202:8080";
+PATH_TO_ASSETS = "";
 
-if(U.getCookie("run_local") == "true")
+if(U.getCookie("run_local") == "true") {
     PATH_TO_SERVER = "http://localhost:8080";
+    PATH_TO_ASSETS = "http://realmechat.github.io";
+}
 
 
 var viewDist = 0.002;
@@ -125,23 +122,26 @@ var icon_radius = 0.00005;
 function showWalls() {
     console.log("showing walls");
 
-    for(var wa in walls) {
-        var addMe = walls[wa];
+    for(var id in walls) {
+        var addMe = walls[id];
 
         if(addMe.added != true) {
             var lat = parseFloat(addMe.wall_lat),
                 lng = parseFloat(addMe.wall_lng),
-                name = addMe.wall_name;
+                name = "wall_"+id,
+                icon_id = addMe.wall_icon_id;
 
             var E = lng - icon_radius,
                 W = lng + icon_radius,
                 N = lat + icon_radius,
                 S = lat - icon_radius;
 
-            console.log(E, W, N, S);
+            console.log("icon_id: "+icon_id,E, W, N, S);
 
-            var imgSrc = "http://realmechat.github.io/public/images/icons/map_sets/retro_pixel/pixel_tree.png";
-            // var imgSrc = "/public/images/icons/map_sets/retro_pixel/pixel_tree.png";
+            // var iconSet = ICONS.sets["testing"];
+
+            var iconFilename = ICONS.getFrom(icon_id, "testing") || "pixel_tree.png";
+            var imgSrc = PATH_TO_ASSETS+"/public/images/icons/map_sets/testing/"+iconFilename;
 
             map.addSource(name, {
                 "type": "image",
@@ -236,17 +236,13 @@ refreshLocation();
 
 function getPoints()  {
     
-    
     var min_lng = bounds[0][0];
     var min_lat = bounds[0][1];
-
     
     var max_lng = bounds[1][0];
     var max_lat = bounds[1][1];
 
 
-
-    // var target = "http://localhost:8080/aardvark/walls"
     var target = PATH_TO_SERVER+"/aardvark/walls"
     target += "?min_lat="+min_lat;
     target += "&max_lat="+max_lat;
@@ -262,57 +258,10 @@ function getPoints()  {
 
     request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
-            // Success!
-            var response = request.responseText;
-            console.log(response);
-            var data = JSON.parse(response);
-            console.log(data);
-            console.log(data.name);
+            var data = JSON.parse(request.responseText);
 
-            // var walls = data.vals;
-
-            // for(var wa in walls) {
-            //     var wall = walls[wa];
-            //     var addMe = L.marker([wall.wall_lng, wall.wall_lat])
-            //     addMe.addTo(map);
-            // }
             addWalls(data.vals);
             showWalls();
-            // if(marker_source_count == 0)
-            //     map.on('style.load', showWalls);
-            // else
-            //     showWalls();
-
-            // var marker_source = createMarkerSourceForWalls(data.vals);
-
-            // function addMarkerSource() {
-
-            //     var name = "markers-"+marker_source_count;
-            //     marker_source_count++;
-
-            //     map.addSource(name, marker_source);
-
-            //     map.addLayer({
-            //         "id": name,
-            //         "type": "symbol",
-            //         "source": name,
-            //         "layout": {
-            //             "icon-image": "{marker-symbol}-15",
-            //             "text-field": "{title}",
-            //             "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
-            //             "text-offset": [0, 0.6],
-            //             "text-anchor": "top"
-            //         }
-            //     });
-            // }
-
-            
-
-            
-
-            // map.load(addMarkerSource);
-
-
         } else {
             // We reached our target server, but it returned an error
             alert("include src '"+target+"' does not exist")
@@ -378,10 +327,6 @@ map.on("zoom", function(event) {
     var percent = ((1.5-(fillAmount/2))*100) + '%';
 
     El.byId("clouds").style.backgroundSize = percent+" "+percent;
-    // console.log(percent);
-
-    // var bound_width = bound[1][0] - bounds[0][0];
-    // var bound_height = bound[1][0] - bounds[0][0];
 });
 
 
