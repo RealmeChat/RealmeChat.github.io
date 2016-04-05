@@ -106,6 +106,7 @@ var marker_source_count = 0;
 
 
 var walls = {};
+var layer_ids = [];
 
 function addWalls(addUs) {
     var addUs = addUs;
@@ -113,7 +114,17 @@ function addWalls(addUs) {
     for(var ad in addUs) {
         var addMe = addUs[ad];
         if(walls[addMe.wall_id] == undefined)
-            walls[addMe.wall_id] = addMe;    
+            walls[addMe.wall_id] = addMe;
+
+            var lat = parseFloat(addMe.wall_lat),
+                lng = parseFloat(addMe.wall_lng);
+
+            addMe.sides = {};
+            addMe.sides.W = lng - icon_radius;
+            addMe.sides.E = lng + icon_radius;
+            addMe.sides.N = lat + icon_radius;
+            addMe.sides.S = lat - icon_radius;
+
     }
 }
 
@@ -126,15 +137,12 @@ function showWalls() {
         var addMe = walls[id];
 
         if(addMe.added != true) {
-            var lat = parseFloat(addMe.wall_lat),
-                lng = parseFloat(addMe.wall_lng),
-                name = "wall_"+id,
-                icon_id = addMe.wall_icon_id;
-
-            var E = lng - icon_radius,
-                W = lng + icon_radius,
-                N = lat + icon_radius,
-                S = lat - icon_radius;
+            var name = "wall_"+id,
+                icon_id = addMe.wall_icon_id,
+                W = addMe.sides.W,
+                E = addMe.sides.E,
+                N = addMe.sides.N,
+                S = addMe.sides.S;
 
             console.log("icon_id: "+icon_id,E, W, N, S);
 
@@ -154,10 +162,12 @@ function showWalls() {
                 ]
             });
 
+            layer_ids.push(name+"_icon");
             map.addLayer({
                 "id": name+"_icon",
                 "source": name,
                 "type": "raster",
+                "interactive" : true
                 // "paint": {"raster-opacity": 0.85}
             });
 
@@ -292,8 +302,8 @@ var map = new mapboxgl.Map({
     maxBounds: bounds 
 });
 
-map.dragRotate.disable();
-map.touchZoomRotate.disableRotation();
+// map.dragRotate.disable();
+// map.touchZoomRotate.disableRotation();
 
 
 // map.on('style.load', function() {
@@ -327,6 +337,26 @@ map.on("zoom", function(event) {
     var percent = ((1.5-(fillAmount/2))*100) + '%';
 
     El.byId("clouds").style.backgroundSize = percent+" "+percent;
+});
+
+map.on("mousemove", function(e) {
+
+    var eLng = e.lngLat.lng;
+    var eLat = e.lngLat.lat;
+
+    for(var wa in walls) {
+        var sides = walls[wa].sides;
+
+        if( eLng > sides.W 
+            && eLng < sides.E 
+            && eLat > sides.S 
+            && eLat < sides.N) {
+                //
+            console.log("hover");
+            return;
+        }
+    }
+
 });
 
 

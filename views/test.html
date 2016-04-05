@@ -1,25 +1,34 @@
+
+<script src="http://sephreed.github.io/PINE/PINE_Core.js"></script>
 <script type="text/javascript">
 	
 
-	var PATH_TO_SERVER = "http://api.openstreetmap.org";
-	var target = PATH_TO_SERVER+"/api/0.6/map?bbox=30,0,30.001,0.001";
+
+    PATH_TO_SERVER = "http://108.238.241.202:8080";
+
+    if(U.getCookie("run_local") == "true")
+        PATH_TO_SERVER = "http://localhost:8080";
+
+	
+
+    
+    var target = PATH_TO_SERVER+"/aardvark/posts?walls=0,35";
+    // if(topic) { target += "&topic="+topic; }
 
     var request = new XMLHttpRequest();
     // request.responseType = 'text';
     request.open('GET', target, true);
 
     request.onload = function() {
-    	alert(request.status);
         if (request.status >= 200 && request.status < 400) {
             // Success!
             var response = request.responseText;
             console.log(response);
-            // var data = JSON.parse(response);
-            // console.log(data);
-            // console.log(data.name);
+            var data = JSON.parse(response);
+            console.log(data);
 
-            // addPointsToMap(data.vals);
-            
+            // posts = data.posts;
+            // PINE.getNodeFunction($("postlist")[0], "update")();
         } else {
             // We reached our target server, but it returned an error
             alert("include src '"+target+"' does not exist")
@@ -34,4 +43,5 @@
     };
 
     request.send();
+    
 </script>

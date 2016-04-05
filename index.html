@@ -141,6 +141,30 @@ noscript {
 </style>
 
 <script type="text/javascript">
+
+    PROG = {};
+    PROG.get = function(localTarget) {
+        return new Promise(function(resolve, reject) {
+            var target = PATH_TO_SERVER+"/aardvark/"+localTarget;
+
+            var request = new XMLHttpRequest();
+            request.open('GET', target, true);
+
+            request.onload = function() {
+                if (request.status >= 200 && request.status < 400) {
+                    resolve(request.responseText);
+                } else {
+                    alert("include src '"+target+"' does not exist")
+                }
+            };
+
+            request.onerror = function() {
+                alert("include src '"+target+"' does not exist")
+            };
+
+            request.send();
+        });
+    }
     
 
     PINE.alertErr = true;
@@ -149,6 +173,7 @@ noscript {
 
     SESSION_CACHE = {};
     SESSION_CACHE.topic_tags = [];
+    SESSION_CACHE.walls = [];
     SESSION_CACHE.location = {};
     SESSION_CACHE.location.lat = 29.985899;
     SESSION_CACHE.location.lng = -90.090230;
@@ -217,7 +242,10 @@ noscript {
             }
         }, "before");
 
-        document.getElementById("content_view").FNS.changeSrc("views/map.html");
+        // document.getElementById("content_view").FNS.changeSrc("views/map.html");
+        back_btn.setAttribute("src", "views/settings.html");
+                back_btn.innerHTML = "<div id='settings_btn'></div>";
+                back_btn.style.padding = "0px";
 
 
 

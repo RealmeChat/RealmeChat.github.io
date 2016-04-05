@@ -3,9 +3,17 @@
 		position: absolute;
 		top: 0px;
 		width: 100%;
-		height: 100%;
+		height: 70%;
 		overflow: hidden;
 		z-index: -1;
+	}
+
+	#recent_posts {
+		position: absolute;
+		top: 70%;
+		display: block;
+		height: 30%;
+		overflow: scroll;
 	}
 
 	#land_tiling {
@@ -65,14 +73,14 @@
 	}
 
 	#readout {
-		position: fixed;
+		position: absolute;
 		bottom: 0px;
 		right: 0px;
 	}
 
 
 	#create_wall {
-		position: fixed;
+		position: absolute;
 		top: 0px;
 		left: 50%;
 		transform: translateX(-50%);
@@ -122,6 +130,7 @@
 
 	
 </div>
+<include id="recent_posts" src="views/modules/recentPosts.html"></include>
 
 <changeSrc id="create_wall" target="content_view" src="views/modWall.html" style="display: none">+ Create Wall</changeSrc>
 
@@ -335,11 +344,11 @@ PINE.ready(function(){
 		
 
 	function getPoints()  {
-		var min_lat = loc.lat - 2;
-		var max_lat = loc.lat + 2;
+		var min_lat = loc.lat - .002;
+		var max_lat = loc.lat + .002;
 
-		var min_lng = loc.lng - 2;
-		var max_lng = loc.lng + 2;
+		var min_lng = loc.lng - .002;
+		var max_lng = loc.lng + .002;
 
 		El.byId("points").setAttribute("lat", loc.lat);
 		El.byId("points").setAttribute("lng", loc.lng);
@@ -366,7 +375,16 @@ PINE.ready(function(){
 	            
 	            var data = JSON.parse(response);
 
-	            addPointsToMap(data.vals);
+	            addPointsToMap(data.vals); 
+
+	            var new_walls = [];
+	            for(var va in data.vals) {
+	            	var wall = data.vals[va];
+	            	SESSION_CACHE.walls[wall.wall_id] = wall;
+	            	new_walls.push(wall.wall_id);
+	            }
+
+	            showFirstPostFor(new_walls);
 
 	            // walls = data.vals;
 	            // document.getElementById("points").FNS.update();
@@ -470,6 +488,11 @@ PINE.ready(function(){
 	}
 
 });
+
+
+
+
+
 
 
 </script>

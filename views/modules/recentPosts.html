@@ -1,0 +1,40 @@
+<script type="text/javascript">
+		
+var local_wall_posts = ["test", "woop"];
+
+
+function showFirstPostFor(i_walls) {
+	
+	var q_walls = "posts?walls=";
+	for (var wa in i_walls) {
+		if(wa != 0) q_walls += ","
+		q_walls += i_walls[wa];
+	}
+
+	PROG.get(q_walls).then(function(response){
+		var data = JSON.parse(response).wall_posts;
+		console.log(data);
+
+		local_wall_posts = [];
+
+		for (var da in data) {
+			local_wall_posts.push(data[da][0]);
+		}
+
+		El.byId("local_posts").FNS.update();
+
+	});
+
+}
+
+
+
+</script>
+
+
+<div id="local_posts" spawner="local_wall_posts">
+	<div spawn>{{local_wall_posts[i]}}</div>
+</div>
+
+
+
