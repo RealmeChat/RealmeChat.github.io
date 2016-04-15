@@ -130,7 +130,7 @@
 
 	
 </div>
-<include id="recent_posts" src="views/modules/recentPosts.html"></include>
+<!-- <include id="recent_posts" src="views/modules/recentPosts.html"></include> -->
 
 <changeSrc id="create_wall" target="content_view" src="views/modWall.html" style="display: none">+ Create Wall</changeSrc>
 
@@ -178,6 +178,10 @@ var walls = [];// = [ { wall_lat: 30.5, wall_lng: -97.5 } ];
 
 
 PINE.ready(function(){
+// setTimeout(function(){
+	// return;
+
+	console.log("runnig");
 
 	/*****************
 	*   VARS
@@ -244,7 +248,7 @@ PINE.ready(function(){
 	*   SET UP KEYS
 	*****************/
 
-	keys = [ 
+	var keys = [ 
 		"ArrowDown",
 		"ArrowUp",
 		"ArrowLeft",
@@ -305,7 +309,7 @@ PINE.ready(function(){
 
 	
 
-	setLocation = function(i_lat, i_lng) {
+	function setLocation(i_lat, i_lng) {
 		loc.lat = i_lat;
 		loc.lng = i_lng;
 
@@ -315,7 +319,7 @@ PINE.ready(function(){
 	
 
 
-	refreshLocation = function() {
+	function refreshLocation() {
 
 		var options = {
 		  	enableHighAccuracy: true,
@@ -384,7 +388,8 @@ PINE.ready(function(){
 	            	new_walls.push(wall.wall_id);
 	            }
 
-	            showFirstPostFor(new_walls);
+	            // if(showFirstPostFor)
+	            	// showFirstPostFor(new_walls);
 
 	            // walls = data.vals;
 	            // document.getElementById("points").FNS.update();
@@ -410,14 +415,14 @@ PINE.ready(function(){
 	function addPointsToMap(addUs) {
 		walls = walls.concat(addUs);
 		points.FNS.update();
-		var plat = U.attr(points, "lat");
-		var plng = U.attr(points, "lng");
+		var plat = El.attr(points, "lat");
+		var plng = El.attr(points, "lng");
 
 		for(var i = 0; i < points.childNodes.length; i++) {
 			var domNode = points.childNodes[i];
 			if(domNode.tagName == "POINT") {
-				var wall_lat = U.attr(domNode, "lat");
-				var wall_lng = U.attr(domNode, "lng");
+				var wall_lat = El.attr(domNode, "lat");
+				var wall_lng = El.attr(domNode, "lng");
 
 				var xdeg = (wall_lat - plat) * 100 * 500; 
 				var ydeg = (plng- wall_lng) * 100 * 500;
@@ -476,8 +481,8 @@ PINE.ready(function(){
 
 
 	function updatePointPositions() {
-		var plat = U.attr(points, "lat");
-		var plng = U.attr(points, "lng");
+		var plat = El.attr(points, "lat");
+		var plng = El.attr(points, "lng");
 
 		
 		var xdeg = ((plat - loc.lat) * 50) + 50;
@@ -487,6 +492,7 @@ PINE.ready(function(){
 		TweenLite.to(land_tiling, 0.2, { css :{ backgroundPosition: xdeg+"% "+ydeg+"%" } } );
 	}
 
+// }, 2000);
 });
 
 

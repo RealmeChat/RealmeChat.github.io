@@ -30,7 +30,7 @@
 	            posts = data.vals;
 
 
-	            for(po in posts) {
+	            for(var po in posts) {
 	            	var id = posts[po].topic_id;
 	            	var tag = posts[po].topic_tag;
 	            	SESSION_CACHE.topic_tags[id] = tag;

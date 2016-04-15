@@ -36,9 +36,12 @@ P.S. seriously, I don't care.  just try to limit yourself to a few walls/topics.
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 	<script src="http://zeptojs.com/zepto.min.js"></script>
-	<script src="http://sephreed.github.io/PINE/PINE_Core.js"></script>
+	<!-- <script src="http://sephreed.github.io/PINE/PINE_Core.js"></script> -->
+    <script src="http://sephreed.github.io/PINE/PINE_Core_4.0.js"></script>
+    <!-- <script src="PINE_Core_4.0.js"></script> -->
 	<script src="http://sephreed.github.io/PINE/PINE_Var.js"></script>
 	<script src="http://sephreed.github.io/PINE/PINE_Needles.js"></script>
+    <script src="http://sephreed.github.io/PINE/PINE_Ajax.js"></script>
 
     <link rel="stylesheet" type="text/css" href="public/styles/fallback.css" />
 
@@ -47,12 +50,16 @@ P.S. seriously, I don't care.  just try to limit yourself to a few walls/topics.
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.2/TweenLite.min.js"></script>
 
 	<pine>
+
+
 		<needle src="needles/Needle_CommentBox.html"></needle>
         <needle src="http://sephreed.github.io/PINE/needles/peephole.html"></needle>
         <needle src="http://sephreed.github.io/PINE/needles/overlay.html"></needle>
         <needle src="http://sephreed.github.io/PINE/needles/bgimg.html"></needle>
-
-        <include id="style_include" src="{{style_include_cookie}}"></include>
+        <!-- <include id="style_include" src="{{style_include_cookie}}"></include> -->
+        <include id="style_include" src="public/styles/empty.css"></include>
+        
+        
 	</pine>
 </head>
 
@@ -141,6 +148,12 @@ noscript {
 </style>
 
 <script type="text/javascript">
+    // U.showLog["permeate"] = true;
+    // U.showLog["opFunc"] = true;
+    // U.showLog["pinefunc"] = true;
+    // U.showLog["async"] = true;
+
+
 
     PROG = {};
     PROG.get = function(localTarget) {
@@ -208,10 +221,10 @@ noscript {
         // console.log(document.getElementById("content_view").FNS)
         // alert(document.getElementById("content_view").FNS)
 
-        var back_btn = document.getElementById("back_btn");
+        var back_btn = El.byId("back_btn");
 
-        document.getElementById("content_view").FNS.changeSrc.add(function(src) {
-            var oldView = U.attr(this, "src");
+        El.byId("content_view").FNS.changeSrc.add(function(src) {
+            var oldView = El.attr(this, "src");
 
             back_btn.style.padding = "10px";
 
@@ -244,8 +257,8 @@ noscript {
 
         // document.getElementById("content_view").FNS.changeSrc("views/map.html");
         back_btn.setAttribute("src", "views/settings.html");
-                back_btn.innerHTML = "<div id='settings_btn'></div>";
-                back_btn.style.padding = "0px";
+            back_btn.innerHTML = "<div id='settings_btn'></div>";
+            back_btn.style.padding = "0px";
 
 
 
@@ -277,6 +290,7 @@ noscript {
             <changeSrc id="back_btn" target="content_view"></changeSrc>
             
             <include id="content_view" src="views/map.html"></include>
+            <!-- <include id="content_view" src="views/posts.html?wall=0"></include> -->
             
         </content>
     </pine></body>
