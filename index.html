@@ -148,6 +148,8 @@ noscript {
 </style>
 
 <script type="text/javascript">
+    U.showLog["include"] = true;
+    INC.setCachingDefault(INC.BYROOT);
     // U.showLog["permeate"] = true;
     // U.showLog["opFunc"] = true;
     // U.showLog["pinefunc"] = true;
@@ -289,7 +291,7 @@ noscript {
             <!-- <button id="changePage" onclick="changePage()">Change Page</button> -->
             <changeSrc id="back_btn" target="content_view"></changeSrc>
             
-            <include id="content_view" src="views/map.html"></include>
+            <view id="content_view" src="views/map.html"></view>
             <!-- <include id="content_view" src="views/posts.html?wall=0"></include> -->
             
         </content>
