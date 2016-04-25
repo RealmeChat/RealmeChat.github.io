@@ -1,7 +1,9 @@
 body {  
-	background-color: #FAFAFA;  
+	/*background-color: #FAFAFA;  */
 	font-family: arial;
-	color: #333;
+	/*color: #333;*/
+	background-color: #C6FBDD;  
+	color: #262123;
 }
 
 button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall, .btn {
@@ -11,26 +13,12 @@ button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall, .btn {
 }
 
 heading {
-	background-color: #b2d786;
+	background-color: #FC814A;
 }
 
 #map {
-	background-image: url("../images/icons/map_sets/testing/cloud_background-70.png");
-	background-size: cover;
-}
-
-#map_land {
-	display: block;
-	position: absolute;
-	border-radius: 400px;
-	height: 103%;
-	width: 103%;
 	/*background-color: #AFA;*/
-	background-color: #b2d786;
-	left: 50%;
-	top: 50%;
-	transform: translateX(-50%) translateY(-50%);
-	overflow: hidden;
+	background-color: #2AC830;
 }
 
 #you {
@@ -38,7 +26,6 @@ heading {
 }
 
 #land_tiling {
-	display: none;
 	background-image: url('../images/tiling.png');
 	background-size: 25px;
 	opacity: 0.1;
@@ -52,7 +39,6 @@ point {
 }
 
 peephole{
-	display: none;
 	background-image: url('../images/peephole.png');
 	opacity: 0.3;
 }
