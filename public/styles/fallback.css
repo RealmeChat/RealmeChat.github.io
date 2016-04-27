@@ -4,14 +4,25 @@ body {
 	color: #333;
 }
 
-button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall, .btn {
+button, #topics, .btn {
 	background-color: #FC814A;
 	border: 1px solid rgba(0,0,0,0.3);
 	overflow: hidden;
 }
 
+#back_btn, #refresh_btn {
+	opacity: 0.75;
+}
+
 heading {
+	display: block;
+	padding: 10px;
 	background-color: #b2d786;
+	/*background-color: #FAFAFA;*/
+	border-bottom: 2px solid rgba(0,0,0,0.3);
+	height: 65px;
+	text-align: center;
+	font-size: 20px;
 }
 
 #map {

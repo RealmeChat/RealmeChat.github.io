@@ -12,21 +12,16 @@
 
 
 	var posts = [];
-	var wall = getQuery("wall") || 0;
+	var wallId = getQuery("wall") || 0;
 	var topic = getQuery("topic");
 
-	// if(topic !== undefined) {
-	// 	var topic_tag = SESSION_CACHE.topic_tags[topic];
-	// 	document.getElementById("header").innerHTML += " for topic "+topic_tag;
-	// 	document.getElementById("topic_tag").value = topic_tag;
-	// }
-	// else {
-	// 	document.getElementById("header").innerHTML += " for all topics";
-	// }
+	var wall = SESSION_CACHE.walls[wallId];
+	var wall_name = wall.wall_name;
+	var wall_icon_id = wall.wall_icon_id;
 
 	PINE.addEventListener("DOMContentLoaded", function() {
 	    
-	    var target = PATH_TO_SERVER+"/aardvark/posts?wall="+wall;
+	    var target = PATH_TO_SERVER+"/aardvark/posts?wall="+wallId;
 	    if(topic) { target += "&topic="+topic; }
 
 	    var request = new XMLHttpRequest();
@@ -43,7 +38,8 @@
 	            // console.log(data.name);
 
 	            posts = data.posts;
-	            PINE.getNodeFunction($("postlist")[0], "update")();
+	            // PINE.getNodeFunction($("postlist")[0], "update")();
+	            El.byId("postlist").FNS.update();
 	        } else {
 	            // We reached our target server, but it returned an error
 	            alert("include src '"+target+"' does not exist")
@@ -76,30 +72,80 @@
         request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
         var topic_tag = document.getElementById("topic_tag").value;
-	  	var data = {post_body: addMe, post_wall_id: wall, post_topic_tag: topic_tag};
+	  	var data = {post_body: addMe, post_wall_id: wallId, post_topic_tag: topic_tag};
 
 	  	request.send(JSON.stringify(data));
 
     }
 
+    function showCommentArea() {
+    	El.byId("commentArea").style.height="200px";
+    }
+
 </script>
 
 
+<style type="text/css">
+	#posts_view heading icon {
+		position: absolute;
+		left: 10px;
+		height: 40px;
+		width: 40px;
+	}
+
+	#commentArea {
+		height: 0px;
+		overflow: hidden;
+		transition: height 0.5s ease;
+	}
+
+	#add_comment {
+		position: absolute;
+		right: 10px;
+		bottom: 10px;
+		background-image: url("public/images/icons/map_sets/testing/plus_sign.png");
+		background-position: center;
+		background-size: contain;
+		background-repeat: no-repeat;
+		box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+	}
+
+	#posts_view content {
+		display: block;
+		position: absolute;
+		top: 65px;
+		width: 100%;
+		bottom: 0px;
+		overflow-y: scroll;
+	}
+</style>
 
 
-<heading id="header">Posts for wall
-	<changeSrc id="topics" target="content_view" src="views/wallTopics.html?wall={{wall}}">#</changeSrc>
-</heading>
+<div id="posts_view">
+	<heading>
+		{{wall_name}}
+		<icon class="point_icon_{{wall_icon_id}}"></icon>
+		<!-- <changeSrc id="topics" target="wall_view" src="views/wallTopics.html?wall={{wallId}}">#</changeSrc> -->
+	</heading>
 
-<postlist spawner="posts" autoRun="false">
-	<post spawn>{{posts[i]}}</post>
-</postlist>
+	<content>
+		<postlist id="postlist" spawner="posts" autoRun="false">
+			<post spawn>
+				{{posts[i]}}<br>
+				<ptime>Dec 17, 2016 10:00</ptime>
+				<ptopic>#hats</ptopic>
+			</post>
+		</postlist>
 
-<div style="padding: 10px">
-	<commentbox submitfn="addComment" placeholder="I think...">I think...</commentbox>
-	Topic #<input id="topic_tag" type="textarea"></input>
+		<div id="commentArea">
+			<commentbox submitfn="addComment" placeholder="I think...">I think...</commentbox>
+			Topic #<input id="topic_tag" type="textarea"></input>
 
-	<button trigger="click" target="commentbox" fn="submit">
-		Submit
-	</button>
+			<button trigger="click" target="commentbox" fn="submit">
+				Submit
+			</button>
+		</div>
+	</content>
+
+	<div id="add_comment" class="circle_btn" onclick="showCommentArea()"></div>
 </div>

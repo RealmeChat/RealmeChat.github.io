@@ -51,7 +51,8 @@
 	            var response = request.responseText;
 	            var data = JSON.parse(response);
 	            console.log(data);
-	            El.byId("content_view").FNS.changeSrc("views/posts.html?wall="+data.wall_id);
+	            El.byId("content_view").FNS.changeSrc("views/map.html");
+	            El.byId("wall_view").FNS.changeSrc("views/posts.html?wall="+data.wall_id);
 	        } else {
 	            alert("include src '"+target+"' does not exist")
 	        }

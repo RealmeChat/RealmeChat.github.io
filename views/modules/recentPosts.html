@@ -27,14 +27,128 @@ function showFirstPostFor(i_walls) {
 
 }
 
+PINE.ready(function(){
+	var isSmall = true;
+	var recent_posts = El.byId("recent_posts");
+	var local_posts = El.byId("local_posts");
+	var fade = El.byId("recent_posts_fade");
+
+	local_posts.addEventListener("wheel", function(event) {
+		// console.log(event)
+		if(isSmall && event.deltaY > 0) {
+			recent_posts.style.height = "90%";
+			// fade.style.display = "inherit";
+			fade.style.opacity = "0.4";
+			// fade.style.pointerEvents = "inherit";
+			isSmall = false;
+			setTimeout(function() {
+				local_posts.style.overflowY = "scroll";
+			}, 500)
+		}
+		else if(event.deltaY < -25 && local_posts.scrollTop < 1) {
+			recent_posts.style.height = "";
+			// fade.style.display = "none";
+			fade.style.opacity = "";
+			// fade.style.pointerEvents = "";
+			isSmall = true;
+			local_posts.style.overflow = "";
+		}
+	});
+
+	// recent_posts.addEventListener("animationstart", function(event) {
+	// 	console.log(event);
+	// 	if(isSmall)
+			
+
+	// 	else
+			
+	// });
+});
+
+
+
+
 
 
 </script>
 
+<style>
+#local_posts {
+	height: 100%;
+	overflow: hidden;	
+}
 
-<div id="local_posts" spawner="local_wall_posts">
-	<div spawn>{{local_wall_posts[i]}}</div>
-</div>
+
+#local_posts >div {
+	/*height: 55px;*/
+	width: 100%;
+	border-bottom: solid 1px rgba(0,0,0,0.3);
+	/*padding: 15px;*/
+	padding: 15px 15px 15px 10px;
+	/*padding: 3px 20px 3px 20px;*/
+}
+
+#local_posts icon {
+	float: left;
+	height: 40px;
+	width: 40px;
+}
+
+
+#create_wall.circle_btn {
+	position: absolute;
+	top: -20px;
+}
+
+#recent_posts_toggler {
+	left: 50%;
+	transform: translateX(-50%);
+	border-bottom-style: none;
+
+	/*border-style: none;*/
+	/*border-top-style: solid;*/
+}
+
+#create_wall {
+	right: 20px;
+	background-image: url("public/images/icons/map_sets/testing/plus_sign.png");
+	background-position: center;
+	background-size: contain;
+	background-repeat: no-repeat;
+	box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
+}
+
+#recent_posts_fade {
+	display: inherit;
+	z-index: -1;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+}
+
+
+</style>
+<!-- <div id+> -->
+	<fade id="recent_posts_fade"></fade>
+
+	<changeSrc id="create_wall" 
+		class="circle_btn" 
+		target="content_view" 
+		src="views/modWall.html"
+		style="display: none">
+	</changeSrc>
+
+	<div id="local_posts" spawner="local_wall_posts">
+		<div spawn>
+			<icon class="point_icon_0"></icon>
+			{{local_wall_posts[i]}}
+			<div class="post_details">
+				<ptime>Dec 17, 2016 10:00</ptime>
+				<ptopic>#hats</ptopic>
+			</div>
+		</div>
+	</div>
+<!-- </div> -->
 
 
 

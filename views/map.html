@@ -3,17 +3,24 @@
 		position: absolute;
 		top: 0px;
 		width: 100%;
-		height: 80%;
+		height: 75%;
 		overflow: hidden;
 		z-index: -1;
 	}
 
 	#recent_posts {
 		position: absolute;
-		top: 70%;
+		bottom: 0px;
 		display: block;
-		height: 30%;
-		overflow: scroll;
+		height: 25%;
+		width: 100%;
+
+		background: #FAFAFA;
+		border-top: solid 1px rgba(0,0,0,0.5);
+		box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+
+		transition: height 0.5s ease;
+		/*overflow: scroll;*/
 	}
 
 	#land_tiling {
@@ -72,28 +79,28 @@
 		z-index: 2;
 	}
 
-	#readout {
+/*	#readout {
 		position: absolute;
 		bottom: 0px;
 		right: 0px;
-	}
+	}*/
 
 
-	#create_wall {
+	/*#create_wall {
 		position: absolute;
 		top: 0px;
 		left: 50%;
 		transform: translateX(-50%);
-	}
+	}*/
 
-	#loc_refresh, #settings_btn {
+	#refresh_btn, #settings_btn {
 		background-size: cover;
 		background-repeat: no-repeat;
 		height: 40px;
 		width: 40px;
 	}
 
-	#loc_refresh {
+	#refresh_btn {
 		position: relative;
 		z-index: 5;
 		background-image: url('public/images/icons/refresh.png');
@@ -104,11 +111,21 @@
 	}
 
 	#wall_view {
-		position: absolute;
 		height: 100%;
 		width: 100%;
-		top: 0px;
-		left: 0px;
+	}
+
+	#wall_overlay {
+		height: 95%;
+		width: 95%;
+		background: #FAFAFA;
+		border: 1px solid rgba(0,0,0,0.8);
+		border-radius: 7px;
+		overflow: hidden;
+	}
+
+	#black_fade {
+		opacity: 0.4;
 	}
 
 	
@@ -130,25 +147,27 @@
 			lat="{{walls[i].wall_lat}}" 
 			lng="{{walls[i].wall_lng}}"
 			title="{{walls[i].wall_name}}">
-			<changeSrc target="content_view" src="views/posts.html?wall={{walls[i].wall_id}}"></changeSrc>
+			<changeSrc target="wall_view" src="views/posts.html?wall={{walls[i].wall_id}}"></changeSrc>
 		</point>
 	</points>
-	<span id="readout"></span>
-	<br><br><br>
-	<!-- <button onclick="mapZoom(2)">Zoom In +</button><br>
-	<button onclick="mapZoom(0.5)">Zoom Out -</button> -->
 
-	<div id="loc_refresh" onclick="refreshLocation()"></div>
+	<br><br><br>
+	<div id="refresh_btn" onclick="refreshLocation()"></div>
 
 	
 </div>
-<view id="wall_view"></view>
-<!-- <include id="recent_posts" src="views/modules/recentPosts.html"></include> -->
 
-<changeSrc id="create_wall" target="content_view" src="views/modWall.html" style="display: none">+ Create Wall</changeSrc>
+<fade id="black_fade"></fade>
+<overlay id="wall_overlay" fade="black_fade">
+	<view id="wall_view" src="nosrc"></view>
+</overlay>
+
+<include id="recent_posts" src="views/modules/recentPosts.html"></include>
+
 
 
 <script>
+
 
 
 
@@ -174,6 +193,10 @@ var walls = [];// = [ { wall_lat: 30.5, wall_lng: -97.5 } ];
 
 PINE.ready(function(){
 
+	El.byId("wall_view").FNS.changeSrc.add(function() {
+		El.byId("wall_overlay").FNS.show();
+	});
+
 	/*****************
 	*   VARS
 	*****************/
@@ -189,8 +212,6 @@ PINE.ready(function(){
 	var loc = SESSION_CACHE.location;
 	var mouse_dlat = 0;
 	var mouse_dlng = 0;
-
-	var readout = document.getElementById("readout");
 
 
 	/*****************
@@ -218,63 +239,63 @@ PINE.ready(function(){
 	*   SET UP MOUSE
 	*****************/
 
-	map.addEventListener("mousemove", function(event) {
-		var x = event.offsetX;
-		var y = event.offsetY;
+	// map.addEventListener("mousemove", function(event) {
+	// 	var x = event.offsetX;
+	// 	var y = event.offsetY;
 
-		var rx = x / width;
-		rx = (rx - 0.5) * 2;
+	// 	var rx = x / width;
+	// 	rx = (rx - 0.5) * 2;
 
-		var ry = y / height;
-		ry = (ry - 0.5) * 2;
+	// 	var ry = y / height;
+	// 	ry = (ry - 0.5) * 2;
 
-		mouse_dlat = rx * halfWidthDLat;
-		mouse_dlng = ry * halfHeightDLng;
+	// 	mouse_dlat = rx * halfWidthDLat;
+	// 	mouse_dlng = ry * halfHeightDLng;
 
-		updateReadout()
-	});
+	// 	updateReadout()
+	// });
 
 
 	/*****************
 	*   SET UP KEYS
 	*****************/
 
-	var keys = [ 
-		"ArrowDown",
-		"ArrowUp",
-		"ArrowLeft",
-		"ArrowRight",
-	];
+	// var keys = [ 
+	// 	"ArrowDown",
+	// 	"ArrowUp",
+	// 	"ArrowLeft",
+	// 	"ArrowRight",
+	// ];
 
-	var keysPressed = {};
-	var keysUpdated = {};
+	// var keysPressed = {};
+	// var keysUpdated = {};
 
-	(function( watchedKeys, domNode ) {
-		var handler = function( down ) {
-			return function( e ) {
-				var index = watchedKeys.indexOf( e.key );
+	// (function( watchedKeys, domNode ) {
+	// 	var handler = function( down ) {
+	// 		return function( e ) {
+	// 			var index = watchedKeys.indexOf( e.key );
 
-				console.log(e.key)
+	// 			console.log(e.key)
 
-				if( index >= 0 ) {
-					if( keysPressed[e.key] != down ) {
-						keysUpdated[e.key] = true;
-					}
-					keysPressed[e.key] = down; 
-					//e.preventDefault();
-				}
-			};
-		};
-		domNode.addEventListener( "keydown", handler( true ), false );
-		domNode.addEventListener( "keyup", handler( false ), false );
+	// 			if( index >= 0 ) {
+	// 				if( keysPressed[e.key] != down ) {
+	// 					keysUpdated[e.key] = true;
+	// 				}
+	// 				keysPressed[e.key] = down; 
+	// 				//e.preventDefault();
+	// 			}
+	// 		};
+	// 	};
+	// 	domNode.addEventListener( "keydown", handler( true ), false );
+	// 	domNode.addEventListener( "keyup", handler( false ), false );
 
-		//init all keys
-		for(var i in watchedKeys) {
-			keysUpdated[watchedKeys[i]] = false;
-			keysPressed[watchedKeys[i]] = false;
-		}
+	// 	//init all keys
+	// 	for(var i in watchedKeys) {
+	// 		keysUpdated[watchedKeys[i]] = false;
+	// 		keysPressed[watchedKeys[i]] = false;
+	// 	}
 
-	})(keys, map);
+	// })(keys, map);
 
 	
 	
@@ -378,8 +399,8 @@ PINE.ready(function(){
 	            	new_walls.push(wall.wall_id);
 	            }
 
-	            // if(showFirstPostFor)
-	            	// showFirstPostFor(new_walls);
+	            if(showFirstPostFor)
+	            	showFirstPostFor(new_walls);
 
 	            // walls = data.vals;
 	            // document.getElementById("points").FNS.update();
@@ -434,52 +455,52 @@ PINE.ready(function(){
 
 
 
-	function updateMovement() {
+	// function updateMovement() {
 
-		var dlat = 0, dlng = 0;
-		var speed = 0.1;
+	// 	var dlat = 0, dlng = 0;
+	// 	var speed = 0.1;
 
-		if( keysPressed["ArrowUp"] )
-			dlng += speed
+	// 	if( keysPressed["ArrowUp"] )
+	// 		dlng += speed
 
-		if( keysPressed["ArrowDown"] ) 
-			dlng -= speed
+	// 	if( keysPressed["ArrowDown"] ) 
+	// 		dlng -= speed
 
-		if( keysPressed["ArrowLeft"] )
-			dlat -= speed
+	// 	if( keysPressed["ArrowLeft"] )
+	// 		dlat -= speed
 
-		if( keysPressed["ArrowRight"] )
-			dlat += speed
+	// 	if( keysPressed["ArrowRight"] )
+	// 		dlat += speed
 
-		if(dlat || dlng) {
-			loc.lat += dlat;
-			loc.lng += dlng;
+	// 	if(dlat || dlng) {
+	// 		loc.lat += dlat;
+	// 		loc.lng += dlng;
 
-			updateReadout()
-			updatePointPositions();
-		}
-	}
+	// 		// updateReadout()
+	// 		updatePointPositions();
+	// 	}
+	// }
 
-	setInterval(updateMovement, 100)
+	// setInterval(updateMovement, 100)
 
-	function updateReadout() {
-		var latOut = ((loc.lat+mouse_dlat)+'').substring(0, 10);
-		var lngOut = ((loc.lng+mouse_dlng)+'').substring(0, 10);
-		readout.innerHTML = latOut+", "+lngOut;
-	}
+	// function updateReadout() {
+	// 	var latOut = ((loc.lat+mouse_dlat)+'').substring(0, 10);
+	// 	var lngOut = ((loc.lng+mouse_dlng)+'').substring(0, 10);
+	// 	readout.innerHTML = latOut+", "+lngOut;
+	// }
 
 
-	function updatePointPositions() {
-		var plat = El.attr(points, "lat");
-		var plng = El.attr(points, "lng");
+	// function updatePointPositions() {
+	// 	var plat = El.attr(points, "lat");
+	// 	var plng = El.attr(points, "lng");
 
 		
-		var xdeg = ((plat - loc.lat) * 50) + 50;
-		var ydeg = ((loc.lng - plng) * 50) + 50;
+	// 	var xdeg = ((plat - loc.lat) * 50) + 50;
+	// 	var ydeg = ((loc.lng - plng) * 50) + 50;
 
-		TweenLite.to(points, 0.2, { css: { left: xdeg+"%", top: ydeg+"%" } } );
-		TweenLite.to(land_tiling, 0.2, { css :{ backgroundPosition: xdeg+"% "+ydeg+"%" } } );
-	}
+	// 	TweenLite.to(points, 0.2, { css: { left: xdeg+"%", top: ydeg+"%" } } );
+	// 	TweenLite.to(land_tiling, 0.2, { css :{ backgroundPosition: xdeg+"% "+ydeg+"%" } } );
+	// }
 
 
 });
