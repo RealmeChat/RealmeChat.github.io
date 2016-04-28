@@ -42,8 +42,26 @@ PINE.ready(function(){
 	var fade = El.byId("recent_posts_fade");
 
 	local_posts.addEventListener("wheel", function(event) {
-		// console.log(event)
-		if(isSmall && event.deltaY > 0) {
+		swipeEvent(event.deltaY);
+	});
+
+
+	var startY;
+	recent_posts.addEventListener('touchstart', function(e){
+        startY = e.changedTouches[0].pageY;
+    }, false)
+
+    recent_posts.addEventListener('touchend', function(e){
+    	if(startY != undefined) {
+	    	var deltaY = e.changedTouches[0].pageY - startY;
+	        startY = undefined;
+	        swipeEvent(deltaY);
+	    }
+    }, false)
+
+    function swipeEvent(deltaY) {
+    	// console.log(event)
+		if(isSmall && deltaY > 0) {
 			recent_posts.style.height = "90%";
 			// fade.style.display = "inherit";
 			fade.style.opacity = "0.4";
@@ -53,7 +71,7 @@ PINE.ready(function(){
 				local_posts.style.overflowY = "scroll";
 			}, 500)
 		}
-		else if(event.deltaY < -25 && local_posts.scrollTop < 1) {
+		else if(deltaY < -25 && local_posts.scrollTop < 1) {
 			recent_posts.style.height = "";
 			// fade.style.display = "none";
 			fade.style.opacity = "";
@@ -61,16 +79,8 @@ PINE.ready(function(){
 			isSmall = true;
 			local_posts.style.overflow = "";
 		}
-	});
+    }
 
-	// recent_posts.addEventListener("animationstart", function(event) {
-	// 	console.log(event);
-	// 	if(isSmall)
-			
-
-	// 	else
-			
-	// });
 });
 
 
