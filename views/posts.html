@@ -65,7 +65,7 @@
 
         posts.push(addMe);
 
-        $("postlist")[0].FNS.update();
+        El.byId("postlist").FNS.update();
 
         var request = new XMLHttpRequest();
         request.open('POST', PATH_TO_SERVER+'/aardvark/posts', true);
@@ -138,7 +138,7 @@
 		</postlist>
 
 		<div id="commentArea">
-			<commentbox submitfn="addComment" placeholder="I think...">I think...</commentbox>
+			<commentbox id="commentbox" submitfn="addComment" placeholder="I think...">I think...</commentbox>
 			Topic #<input id="topic_tag" type="textarea"></input>
 
 			<button trigger="click" target="commentbox" fn="submit">

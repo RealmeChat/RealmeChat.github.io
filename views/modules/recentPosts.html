@@ -1,9 +1,12 @@
 <script type="text/javascript">
 		
-var local_wall_posts = ["test", "woop"];
+// var local_wall_posts = ["test", "woop"];
+var local_walls = [0];
 
 
 function showFirstPostFor(i_walls) {
+
+	local_walls = i_walls;
 	
 	var q_walls = "posts?walls=";
 	for (var wa in i_walls) {
@@ -15,10 +18,15 @@ function showFirstPostFor(i_walls) {
 		var data = JSON.parse(response).wall_posts;
 		console.log(data);
 
-		local_wall_posts = [];
+		// local_wall_posts = [];
 
+		var i = 0;
 		for (var da in data) {
-			local_wall_posts.push(data[da][0]);
+			// local_wall_posts.push(data[da][0]);
+			var wall_id = i_walls[i];
+			var recent_post = data[da][0];
+			SESSION_CACHE.walls[wall_id].recent_post = recent_post;
+			i++;
 		}
 
 		El.byId("local_posts").FNS.update();
@@ -79,7 +87,8 @@ PINE.ready(function(){
 }
 
 
-#local_posts >div {
+#local_posts >changeSrc {
+	display: block;
 	/*height: 55px;*/
 	width: 100%;
 	border-bottom: solid 1px rgba(0,0,0,0.3);
@@ -127,6 +136,8 @@ PINE.ready(function(){
 }
 
 
+
+
 </style>
 <!-- <div id+> -->
 	<fade id="recent_posts_fade"></fade>
@@ -138,15 +149,15 @@ PINE.ready(function(){
 		style="display: none">
 	</changeSrc>
 
-	<div id="local_posts" spawner="local_wall_posts">
-		<div spawn>
-			<icon class="point_icon_0"></icon>
-			{{local_wall_posts[i]}}
+	<div id="local_posts" spawner="local_walls" setpvar="wall=SESSION_CACHE.walls[local_walls[i]]">
+		<changeSrc target="wall_view" src="views/posts.html?wall={{wall.wall_id}}" spawn>
+			<icon class="point_icon_{{wall.wall_icon_id}}"></icon>
+			{{wall.recent_post}}
 			<div class="post_details">
 				<ptime>Dec 17, 2016 10:00</ptime>
-				<ptopic>#hats</ptopic>
+				<ptopic>#{{TOPIC[wall.wall_topic_id]}}</ptopic>
 			</div>
-		</div>
+		</changeSrc>
 	</div>
 <!-- </div> -->
 

@@ -490,17 +490,17 @@ PINE.ready(function(){
 	// }
 
 
-	// function updatePointPositions() {
-	// 	var plat = El.attr(points, "lat");
-	// 	var plng = El.attr(points, "lng");
+	function updatePointPositions() {
+		var plat = El.attr(points, "lat");
+		var plng = El.attr(points, "lng");
 
 		
-	// 	var xdeg = ((plat - loc.lat) * 50) + 50;
-	// 	var ydeg = ((loc.lng - plng) * 50) + 50;
+		var xdeg = ((plat - loc.lat) * 50) + 50;
+		var ydeg = ((loc.lng - plng) * 50) + 50;
 
-	// 	TweenLite.to(points, 0.2, { css: { left: xdeg+"%", top: ydeg+"%" } } );
-	// 	TweenLite.to(land_tiling, 0.2, { css :{ backgroundPosition: xdeg+"% "+ydeg+"%" } } );
-	// }
+		points.style.left = xdeg+'%';
+		points.style.top = ydeg+'%';
+	}
 
 
 });

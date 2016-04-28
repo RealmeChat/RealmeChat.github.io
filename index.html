@@ -177,12 +177,13 @@ ptopic {
 </style>
 
 <script type="text/javascript">
-    U.showLog["include"] = true;
-    INC.setCachingDefault(INC.BYROOT);
+    // U.showLog["include"] = true;
     // U.showLog["permeate"] = true;
     // U.showLog["opFunc"] = true;
     // U.showLog["pinefunc"] = true;
     // U.showLog["async"] = true;
+
+    INC.setCachingDefault(INC.BYROOT);
 
 
 
@@ -216,7 +217,7 @@ ptopic {
 
 
     SESSION_CACHE = {};
-    SESSION_CACHE.topic_tags = [];
+    var TOPIC = SESSION_CACHE.topic_tags = [];
     SESSION_CACHE.walls = [];
     SESSION_CACHE.location = {};
     SESSION_CACHE.location.lat = 29.985899;
