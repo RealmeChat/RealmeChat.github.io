@@ -58,7 +58,7 @@ PINE.ready(function(){
 	    	var deltaY = e.changedTouches[0].pageY - startY;
 	    	console.log(deltaY);
 	        startY = undefined;
-	        swipeEvent(deltaY);
+	        swipeEvent(-deltaY);
 	    }
     }, false)
 
