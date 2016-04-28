@@ -48,14 +48,17 @@ PINE.ready(function(){
 
 	var startY;
 	recent_posts.addEventListener('touchstart', function(e){
+		console.log(e);
         startY = e.changedTouches[0].pageY;
     }, false)
 
     recent_posts.addEventListener('touchend', function(e){
+    	console.log(e);
     	if(startY != undefined) {
 	    	var deltaY = e.changedTouches[0].pageY - startY;
+	    	console.log(deltaY);
 	        startY = undefined;
-	        swipeEvent(deltaY);
+	        swipeEvent(-deltaY);
 	    }
     }, false)
 
