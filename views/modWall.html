@@ -10,7 +10,7 @@
 		wall = parseInt(wall);
 		El.byId("wall_header").innerHTML = "Mod wall "+wall;
 		El.byId("delete_wall").style.display = "inherit";
-		El.byId("create_wall").style.display = "none";
+		El.byId("create_new_wall").style.display = "none";
 	}
 
 
@@ -49,8 +49,11 @@
       	request.onload = function() {
 	        if (request.status >= 200 && request.status < 400) {
 	            var response = request.responseText;
-	            var data = JSON.parse(response);
+	            data.wall_id = JSON.parse(response).wall_id;
 	            console.log(data);
+
+	            SESSION_CACHE.walls[data.wall_id] = data;
+
 	            El.byId("content_view").FNS.changeSrc("views/map.html");
 	            El.byId("wall_view").FNS.changeSrc("views/posts.html?wall="+data.wall_id);
 	        } else {
@@ -167,7 +170,7 @@ iconitem:hover {
 	</div> -->
 	2. Name your wall: <input id="wall_name" type="textarea" placeholder="type here"></input>
 
-	<button id="create_wall" onclick="submitWall()">Create</button>
+	<button id="create_new_wall" onclick="submitWall()">Create</button>
 	<button id="delete_wall" onclick="deleteWall()" style="display: none">DELETE WALL</button>
 </div>
 

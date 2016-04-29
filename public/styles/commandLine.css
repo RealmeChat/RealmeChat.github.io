@@ -1,4 +1,4 @@
-body {
+body, content, #recent_posts, #wall_overlay {
 	background-color: #222;
 	color: #FAFAFA;
 }
@@ -13,19 +13,32 @@ heading {
 	background-color: #15AA9A;
 }
 
-button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall, .btn {
+button, #back_btn, #create_wall, #refresh_btn, #topics, #create_wall, .btn, .cirlce_btn {
 	background-color: #1BE481;
 	border: 1px solid rgba(0,0,0,0.3);
 	color: #222;
 }
 
+#back_btn, #refresh_btn {
+    opacity: 1.0;
+}
+
 #map {
-	background-color: #248647;
+	/*background-color: #248647;*/
+	background-color: #203644;
+	background-image: url("public/images/icons/map_sets/retro_pixel/zeroOne2.png");
+	background-repeat: repeat;
+	background-size: 70px;
+}
+
+#map_land {
+	background-color: #00ff9c;
 }
 
 #land_tiling {
-	opacity: 0.05;
-	filter: none;
+	display: none;
+	/*opacity: 0.05;*/
+	/*filter: none;*/
 }
 
 peephole {
