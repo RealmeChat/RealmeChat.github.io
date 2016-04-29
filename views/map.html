@@ -1,11 +1,13 @@
 <style type="text/css">
 	#map {
+
 		position: absolute;
 		top: 0px;
 		width: 100%;
 		height: 75%;
 		overflow: hidden;
 		z-index: -1;
+		background-color: #abdfeb;
 	}
 
 	#recent_posts {
@@ -43,9 +45,12 @@
 		pointer-events: none;
 	}
 
+	.dot {
+		border-radius: 100px;
+	}
+
 	.dot, point {
 		position: absolute;
-		border-radius: 100px;
 		min-height: 20px;
 		min-width: 20px;
 		
@@ -63,15 +68,17 @@
 	}
 
 	point {
-		background-size: contain;
-		background-repeat: no-repeat;
-		background-position: center;
+		padding: 2px;
+		background-image: url("public/images/icons/map_sets/testing/bubble_source.png");
 	}
 
 	point > changeSrc{
 		display: block;
 		min-height: 50px;
 		min-width: 50px;
+		border-radius: 100px;
+		background-size: auto 85%;
+		background-color: #FAFAFA;
 	}
 
 
@@ -124,9 +131,21 @@
 		overflow: hidden;
 	}
 
+	#close_wall_overlay {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		height: 60px;
+		width: 40px;
+		cursor: pointer;
+		background-image: url("public/images/icons/map_sets/testing/x_sign.png");
+	}
+
 	#black_fade {
 		opacity: 0.4;
 	}
+
+
 
 	
 
@@ -143,11 +162,12 @@
 	</div>
 
 	<points id="points" spawner="walls" autoRun="false" style="width: 100%; height: 100%">
-		<point spawn class="point_icon_{{walls[i].wall_icon_id}}"
-			lat="{{walls[i].wall_lat}}" 
+		<point spawn lat="{{walls[i].wall_lat}}" 
 			lng="{{walls[i].wall_lng}}"
 			title="{{walls[i].wall_name}}">
-			<changeSrc target="wall_view" src="views/posts.html?wall={{walls[i].wall_id}}"></changeSrc>
+			<changeSrc class="point_icon_{{walls[i].wall_icon_id}}"
+				target="wall_view" 
+				src="views/posts.html?wall={{walls[i].wall_id}}"></changeSrc>
 		</point>
 	</points>
 
@@ -158,7 +178,9 @@
 </div>
 
 <fade id="black_fade"></fade>
+
 <overlay id="wall_overlay" fade="black_fade">
+	<div id="close_wall_overlay" trigger="click" target="wall_overlay" fn="hide"></div>
 	<view id="wall_view" src="nosrc"></view>
 </overlay>
 

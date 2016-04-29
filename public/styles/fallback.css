@@ -41,7 +41,7 @@ heading {
 	left: 50%;
 	top: 50%;
 	transform: translateX(-50%) translateY(-50%);
-	overflow: hidden;
+	/*overflow: hidden;*/
 }
 
 #you {
@@ -49,11 +49,8 @@ heading {
 }
 
 #land_tiling {
-	display: none;
-	background-image: url('../images/tiling.png');
-	background-size: 25px;
-	opacity: 0.1;
-	filter: invert(100%);
+	background-image: url('../images/icons/map_sets/testing/cloud_foreground.png');
+	background-size: contain;
 }
 
 
