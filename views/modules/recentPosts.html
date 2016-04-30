@@ -14,7 +14,7 @@ function showFirstPostFor(i_walls) {
 		q_walls += i_walls[wa];
 	}
 
-	PROG.get(q_walls).then(function(response){
+	APP.get(q_walls).then(function(response){
 		var data = JSON.parse(response).wall_posts;
 		console.log(data);
 
@@ -25,19 +25,23 @@ function showFirstPostFor(i_walls) {
 			// local_wall_posts.push(data[da][0]);
 			var wall_id = da;
 			var recent_post = data[da][0];
-			SESSION_CACHE.walls[wall_id].recent_post = recent_post;
+			APP.walls[wall_id].recent_post = recent_post;
 
 			var topic_id = recent_post.post_topic_id;
 			if(TOPIC[topic_id] === undefined)
 				unloaded_tags.push(topic_id);
 		}
 
-		PROG.loadTags(unloaded_tags).then(function() {
+		APP.loadTags(unloaded_tags).then(function() {
 			El.byId("local_posts").FNS.update();	
 		});
 	});
 
 }
+
+
+
+
 
 PINE.ready(function(){
 	var isSmall = true;
@@ -91,11 +95,45 @@ PINE.ready(function(){
 });
 
 
-
-
-
-
 </script>
+
+
+
+
+
+
+
+
+
+<changeSrc id="create_wall" 
+	class="circle_btn" 
+	target="wall_view" 
+	src="views/modWall.html"
+	style="display: none">
+</changeSrc>
+
+<div id="local_posts" spawner="local_walls" setpvar="wall=APP.walls[local_walls[i]]">
+	<changeSrc target="wall_view" src="views/posts.html?wall={{wall.wall_id}}" spawn>
+		<icon class="point_icon_{{wall.wall_icon_id}}"></icon>
+		<div class="post_body" ellipsize>{{wall.recent_post.post_body}}</div>
+		<div class="post_details">
+			<ptime>{{wall.recent_post.post_date}}</ptime>
+			<ptopic>#{{TOPIC[wall.recent_post.post_topic_id]}}</ptopic>
+		</div>
+	</changeSrc>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 
 <style>
 #local_posts {
@@ -158,32 +196,11 @@ PINE.ready(function(){
 	overflow: hidden;
 }
 
-
-
 </style>
-<!-- <div id+> -->
 
-	<changeSrc id="create_wall" 
-		class="circle_btn" 
-		target="wall_view" 
-		src="views/modWall.html"
-		style="display: none">
-	</changeSrc>
 
-	<div id="local_posts" spawner="local_walls" setpvar="wall=SESSION_CACHE.walls[local_walls[i]]">
-		<changeSrc target="wall_view" src="views/posts.html?wall={{wall.wall_id}}" spawn>
-			<icon class="point_icon_{{wall.wall_icon_id}}"></icon>
-			<div class="post_body" ellipsize>{{wall.recent_post.post_body}}</div>
-			<div class="post_details">
-				<!-- <ptime>Dec 17, 2016 10:00</ptime> -->
-				<ptime>{{wall.recent_post.post_date}}</ptime>
-				<ptopic>#{{TOPIC[wall.recent_post.post_topic_id]}}</ptopic>
-				<!-- <ptopic>#{{wall.recent_post.post_topic_id}}</ptopic> -->
-				<!-- <ptopic>#{{}}</ptopic> -->
-			</div>
-		</changeSrc>
-	</div>
-<!-- </div> -->
+	
+
 
 
 

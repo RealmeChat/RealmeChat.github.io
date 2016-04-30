@@ -3,11 +3,31 @@
 		"celine.css",
 		"commandLine.css",
 		"retroHacker.css",
-		// "empty.css",
-		
-		// "misty.css"
 	]
 </script>
+
+
+
+
+
+
+
+<heading>Style Settings</heading>
+
+<stylelist spawner="styleFilenames">
+	<stylelink spawn>
+		<changeSrc target="style_include" src="public/styles/{{styleFilenames[i]}}">
+			{{styleFilenames[i]}}
+		</changeSrc><br>
+	</stylelink>
+</stylelist>
+
+
+
+
+
+
+
 
 <style>
 	stylelist {
@@ -28,15 +48,5 @@
 		background-color: rgba(120,250,120,0.4);
 	}
 </style>
-
-<heading>Style Settings</heading>
-
-<stylelist spawner="styleFilenames">
-	<stylelink spawn>
-		<changeSrc target="style_include" src="public/styles/{{styleFilenames[i]}}">
-			{{styleFilenames[i]}}
-		</changeSrc><br>
-	</stylelink>
-</stylelist>
 
 

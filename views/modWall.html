@@ -37,8 +37,8 @@
 
 		var data = {
 			wall_name : wall_name,
-			wall_lat : SESSION_CACHE.location.lat,
-			wall_lng : SESSION_CACHE.location.lng,
+			wall_lat : APP.location.lat,
+			wall_lng : APP.location.lng,
 			wall_rollover : 100,
 			wall_icon_id : icon_id,
 			wall_creator_id : 0,
@@ -47,7 +47,7 @@
 		}
 
 		var request = new XMLHttpRequest();
-        request.open('POST', PATH_TO_SERVER+'/aardvark/walls', true);
+        request.open('POST', APP.PATH_TO_SERVER+'/aardvark/walls', true);
         request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
       	request.onload = function() {
 	        if (request.status >= 200 && request.status < 400) {
@@ -55,7 +55,7 @@
 	            data.wall_id = JSON.parse(response).wall_id;
 	            console.log(data);
 
-	            SESSION_CACHE.walls[data.wall_id] = data;
+	            APP.walls[data.wall_id] = data;
 
 	            El.byId("content_view").FNS.changeSrc("views/map.html");
 	            El.byId("wall_view").FNS.changeSrc("views/posts.html?wall="+data.wall_id);
@@ -76,12 +76,68 @@
 		var data = { wall_id : wall }
 
 		var request = new XMLHttpRequest();
-        request.open('DELETE', PATH_TO_SERVER+'/aardvark/walls', true);
+        request.open('DELETE', APP.PATH_TO_SERVER+'/aardvark/walls', true);
         request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 	  	request.send(JSON.stringify(data));
 	}
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<heading id="wall_header">Create Wall</heading>
+
+<div style="padding: 10px">
+	<div style="line-height: 80px">
+		1. Choose An Icon -->
+		<span id="icon_preview" class="point_icon_0" onclick="showIconChooser()"></span>
+	</div>
+
+	2. Name your wall: <input id="wall_name" type="textarea" placeholder="type here"></input><br>
+	<br>
+	3. Create the first post:<br>
+	<textarea id="first_post"></textarea>
+
+	<button id="create_new_wall" onclick="submitWall()">Create</button>
+	<button id="delete_wall" onclick="deleteWall()" style="display: none">DELETE WALL</button>
+</div>
+
+
+
+<!--****************
+**    Overlays
+******************-->
+
+<overlay id="icon_chooser" exitOnOutClick="true">
+	<iconlist spawner count=40>
+		<iconitem spawn class="point_icon_{{i}}" onclick="setIcon({{i}})"></iconitem>
+	</iconlist>
+</overlay>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <style>
 #icon_preview {
@@ -90,9 +146,6 @@
 	display: inline-block;
 	height: 50px;
 	width: 50px;
-	background-position: center;
-	background-size: contain;
-	background-repeat: no-repeat;
 	cursor: pointer;
 	border: 1px solid black;
 	background-color: white;
@@ -109,28 +162,11 @@
 	width: 80%;
 }
 
-#icon_choose_cancel {
-	border: 1px solid black;
-	background-color: red;
-	position: fixed;
-	top: -10px;
-	right: -10px;
-	height: 40px;
-	width: 40px;
-	line-height: 40px;
-	text-align: center;
-	font-size: 30px;
-	border-radius: 100px;
-}
-
 
 iconitem {
 	display: inline-block;
 	height: 50px;
 	width: 50px;
-	background-position: center;
-	background-size: contain;
-	background-repeat: no-repeat;
 	margin: 10px;
 	cursor: pointer;
 	border-width: 1px;
@@ -155,51 +191,7 @@ iconitem:hover {
 
 </style>
 
-<heading id="wall_header">Create Wall</heading>
 
-<!-- <h2>Entrance</h2> -->
-
-	<div style="padding: 10px">
-	<div style="line-height: 80px">
-		1. Choose An Icon -->
-		<span id="icon_preview" class="point_icon_0" onclick="showIconChooser()"></span>
-	</div>
-
-	<!-- 
-	<div style="opacity: 0.2">
-		Password:<br>
-
-		<h2>Users</h2>
-		Trolls:<br>
-		Flaggers:<br>
-		Spammers:<br>
-
-		<h2>Settings</h2>
-		Rollover count<br>
-	</div> -->
-	2. Name your wall: <input id="wall_name" type="textarea" placeholder="type here"></input><br>
-	<br>
-	3. Create the first post:<br>
-	<textarea id="first_post"></textarea>
-
-	<button id="create_new_wall" onclick="submitWall()">Create</button>
-	<button id="delete_wall" onclick="deleteWall()" style="display: none">DELETE WALL</button>
-</div>
-
-
-
-<!--****************
-**    Overlays
-******************-->
-
-<!-- <fade id="theFade" color="black" opacity="0.5"></fade> -->
-<overlay id="icon_chooser" exitOnOutClick="true"><!--  fade="#theFade"> -->	
-	<iconlist spawner count=40>
-		<iconitem spawn class="point_icon_{{i}}" onclick="setIcon({{i}})"></iconitem>
-	</iconlist>
-	
-</overlay>
-<!-- <div id="icon_choose_cancel" onclick="icon_chooser.FNS.hide()" style="display: none">X</div> -->
 
 
 

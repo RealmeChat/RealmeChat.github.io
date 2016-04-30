@@ -1,13 +1,10 @@
 <script>
 	function getQuery(name){
-		// alert(window.location.search);
 	   	if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(window.location.search))
 	        return decodeURIComponent(name[1]);
 
 	    else return undefined;
 	}
-
-	// alert(window.location.search);
 
 
 
@@ -15,69 +12,44 @@
 	var wallId = getQuery("wall") || 0;
 	var topic = getQuery("topic");
 
-	var wall = SESSION_CACHE.walls[wallId];
-	var wall_name = wall.wall_name;
-	var wall_icon_id = wall.wall_icon_id;
+	var wall = APP.walls[wallId];
+	// var wall_name = wall.wall_name;
+	// var wall_icon_id = wall.wall_icon_id;
 
 	PINE.addEventListener("DOMContentLoaded", function() {
-	    
-	    var target = PATH_TO_SERVER+"/aardvark/posts?wall="+wallId;
+
+	    var target = "posts?wall="+wallId;
 	    if(topic) { target += "&topic="+topic; }
 
-	    var request = new XMLHttpRequest();
-	    // request.responseType = 'text';
-	    request.open('GET', target, true);
 
-	    request.onload = function() {
-	        if (request.status >= 200 && request.status < 400) {
-	            // Success!
-	            var response = request.responseText;
-	            // console.log(response);
-	            var data = JSON.parse(response);
-	            console.log(data);
-	            // console.log(data.name);
+	    APP.get(target).then(function(response) {
+	    	var data = JSON.parse(response);
+            console.log(data);
+            // console.log(data.name);
 
-	            posts = data.posts;
+            posts = data.posts;
 
 
-	            var unloaded_tags = [];
+            var unloaded_tags = [];
 
-				for (var po in posts) {
-					var topic_id = posts[po].post_topic_id;
-					if(TOPIC[topic_id] === undefined)
-						unloaded_tags.push(topic_id);
-				}
+			for (var po in posts) {
+				var topic_id = posts[po].post_topic_id;
+				if(TOPIC[topic_id] === undefined)
+					unloaded_tags.push(topic_id);
+			}
 
-				PROG.loadTags(unloaded_tags).then(function() {
-					El.byId("postlist").FNS.update();	
-				});
-
-	            // PINE.getNodeFunction($("postlist")[0], "update")();
-	            
-	        } else {
-	            // We reached our target server, but it returned an error
-	            alert("include src '"+target+"' does not exist")
-	        }
-	    };
-
-
-
-	    request.onerror = function() {
-	        // There was a connection error of some sort
-	        alert("include src '"+target+"' does not exist")
-	    };
-
-	    request.send();
+			APP.loadTags(unloaded_tags).then(function() {
+				El.byId("postlist").FNS.update();	
+			});
+	    });
 	});
-
-
 
 
 
 	function addComment(addMe) {
 		if(addMe == "" || addMe == "I think...") return;
 
-		var topic_tag = document.getElementById("topic_tag").value;
+		var topic_tag = El.byId("topic_tag").value;
 
 		var addPost = { post_body: addMe}
 
@@ -86,15 +58,15 @@
         El.byId("postlist").FNS.update();
 
         var request = new XMLHttpRequest();
-        request.open('POST', PATH_TO_SERVER+'/aardvark/posts', true);
+        request.open('POST', APP.PATH_TO_SERVER+'/aardvark/posts', true);
         request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
         
 	  	var data = {post_body: addMe, post_wall_id: wallId, post_topic_tag: topic_tag};
 
 	  	request.send(JSON.stringify(data));
-
     }
+
 
     function showCommentArea() {
     	El.byId("commentArea").style.padding = "10px";
@@ -105,9 +77,62 @@
     if(U.getCookie("admin") == "true") {
 		El.byId("wall_admin").style.display = "inherit";
 	}
-
-
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+<div id="posts_view">
+	<heading>
+		{{wall.wall_name}}
+		<icon class="point_icon_{{wall.wall_icon_id}}"></icon>
+		<changeSrc id="wall_admin" target="content_view" src="views/modWall.html?wall={{wallId}}">Edit/Delete Wall</changeSrc>
+	</heading>
+
+	<content>
+		<postlist id="postlist" spawner="posts" autoRun="false">
+			<post spawn>
+				{{posts[i].post_body}}<br>
+				<ptime>{{posts[i].post_date}}</ptime>
+				<ptopic>#{{TOPIC[posts[i].post_topic_id]}}</ptopic>
+			</post>
+		</postlist>
+
+		<div id="commentArea">
+			<commentbox id="commentbox" submitfn="addComment" placeholder="I think...">I think...</commentbox>
+			Topic #<input id="topic_tag" type="textarea"></input>
+
+			<button trigger="click" target="commentbox" fn="submit">
+				Submit
+			</button>
+		</div>
+		<br><br><br><br>
+	</content>
+
+	<div id="add_comment" class="circle_btn" onclick="showCommentArea()"></div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <style type="text/css">
@@ -129,9 +154,6 @@
 		right: 10px;
 		bottom: 10px;
 		background-image: url("public/images/icons/map_sets/testing/plus_sign.png");
-		background-position: center;
-		background-size: contain;
-		background-repeat: no-repeat;
 		box-shadow: 0px 0px 5px rgba(0,0,0,0.3);
 	}
 
@@ -160,35 +182,3 @@
 	}
 
 </style>
-
-
-<div id="posts_view">
-	<heading>
-		{{wall_name}}
-		<icon class="point_icon_{{wall_icon_id}}"></icon>
-		<changeSrc id="wall_admin" target="content_view" src="views/modWall.html?wall={{wallId}}">Edit/Delete Wall</changeSrc>
-		<!-- <changeSrc id="topics" target="wall_view" src="views/wallTopics.html?wall={{wallId}}">#</changeSrc> -->
-	</heading>
-
-	<content>
-		<postlist id="postlist" spawner="posts" autoRun="false">
-			<post spawn>
-				{{posts[i].post_body}}<br>
-				<ptime>{{posts[i].post_date}}</ptime>
-				<ptopic>#{{TOPIC[posts[i].post_topic_id]}}</ptopic>
-			</post>
-		</postlist>
-
-		<div id="commentArea">
-			<commentbox id="commentbox" submitfn="addComment" placeholder="I think...">I think...</commentbox>
-			Topic #<input id="topic_tag" type="textarea"></input>
-
-			<button trigger="click" target="commentbox" fn="submit">
-				Submit
-			</button>
-		</div>
-		<br><br><br><br>
-	</content>
-
-	<div id="add_comment" class="circle_btn" onclick="showCommentArea()"></div>
-</div>

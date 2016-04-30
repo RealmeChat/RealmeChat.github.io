@@ -1,44 +1,25 @@
 <!DOCTYPE html>
 
+<!-- 
+    ____  ____    _    _     _    _  ____
+   |  _ \|  __|  / \  | |   | \  / ||  __|
+   |    ||  _|  / = \ | |__ |  \/  ||  _|
+   |_|\_\|____|/_/'\_\|____||_|\/|_||____|
 
-
-<!-- Hey jackass.
-
-Welcome to my code.  It's currently barely even a prototype, so it's damn easy to hack.  For instance, there's
-no limits on how many posts you make, and it's deadly simple to delegate that kind of work to a for loop.
-Also, you can change your location using arrow keys.
-
-I don't care about you wandering around to places on the map you should have to walk to in order to post, but 
-blowing up my servers is another story.  all of this is running off a cheap laptop.
-
-in short, if you came in here hoping to make a mess, it's your lucky day.  but also, you're a jack ass, and I
-just wanted you to know that.
-
-Happy haxing,
-Seph
-
-P.S. seriously, I don't care.  just try to limit yourself to a few walls/topics. 
-
+                     /\
+    Coded by:       X  X
+        Seph Reed    \/
  -->
 
-
-
-
-
-
-
-
-
 <html lang="en">
+
+
 
 <head>
 	<meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-	<!-- <script src="http://zeptojs.com/zepto.min.js"></script> -->
-	<!-- <script src="http://sephreed.github.io/PINE/PINE_Core.js"></script> -->
     <script src="http://sephreed.github.io/PINE/PINE_Core_4.2.js"></script>
-    <!-- <script src="PINE_Core_4.0.js"></script> -->
 	<script src="http://sephreed.github.io/PINE/PINE_Var.js"></script>
 	<script src="http://sephreed.github.io/PINE/PINE_Needles.js"></script>
     <script src="http://sephreed.github.io/PINE/PINE_Includes.js"></script>
@@ -51,19 +32,222 @@ P.S. seriously, I don't care.  just try to limit yourself to a few walls/topics.
 
 	
 
-        <script src="needles/keepSquare.js"></script>
-        <script src="needles/ellipsize.js"></script>
-		<needle src="needles/Needle_CommentBox.html"></needle>
-        <!-- <needle src="needles/keepSquare.js"></needle> -->
-        <needle src="http://sephreed.github.io/PINE/needles/peephole.html"></needle>
-        <needle src="http://sephreed.github.io/PINE/needles/overlay.html"></needle>
-        <needle src="http://sephreed.github.io/PINE/needles/bgimg.html"></needle>
+    <script src="needles/keepSquare.js"></script>
+    <script src="needles/ellipsize.js"></script>
+	<needle src="needles/Needle_CommentBox.html"></needle>
+    <!-- <needle src="needles/keepSquare.js"></needle> -->
+    <!-- <needle src="http://sephreed.github.io/PINE/needles/peephole.html"></needle> -->
+    <needle src="http://sephreed.github.io/PINE/needles/overlay.html"></needle>
+    <needle src="http://sephreed.github.io/PINE/needles/bgimg.html"></needle>
         
     <pine>
         <include id="style_include" src="{{style_include_cookie}}"></include>
         <!-- <include id="style_include" src="public/styles/empty.css"></include> -->
 	</pine>
 </head>
+
+
+
+    
+<noscript>
+    It appears your browser has javascript disabled.  This app can't run without javascript.
+</noscript>
+
+
+    <!-- *********************
+    *                       *
+    *       BEGIN BODY      *
+    *                       *
+    ************************-->
+    <body><pine>
+
+
+        <content>
+            <!-- <button id="changePage" onclick="changePage()">Change Page</button> -->
+            <changeSrc id="back_btn" target="content_view"></changeSrc>
+            
+            <view id="content_view" src="views/map.html"></view>
+            <!-- <include id="content_view" src="views/posts.html?wall=0"></include> -->
+            
+        </content>
+    </pine></body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+// U.showLog["include"] = true;
+// U.showLog["permeate"] = true;
+// U.showLog["opFunc"] = true;
+// U.showLog["pinefunc"] = true;
+// U.showLog["async"] = true;
+
+INC.setCachingDefault(INC.BYROOT);
+
+
+
+
+APP = {};
+APP.get = function(localTarget) {
+    return new Promise(function(resolve, reject) {
+        var target = APP.PATH_TO_SERVER+"/aardvark/"+localTarget;
+
+        var request = new XMLHttpRequest();
+        request.open('GET', target, true);
+
+        request.onload = function() {
+            if (request.status >= 200 && request.status < 400) {
+                resolve(request.responseText);
+            } else {
+                alert("include src '"+target+"' does not exist")
+            }
+        };
+
+        request.onerror = function() {
+            alert("include src '"+target+"' does not exist")
+        };
+
+        request.send();
+    });
+}
+
+
+APP.loadTags = function(tagsToLoad) {
+    console.log("TAGS", tagsToLoad);
+
+    return APP.get("topics?ids="+tagsToLoad.toString()).then(function(response) {
+        
+        var data = JSON.parse(response).vals;
+        console.log(data);
+        for(var da in data) {
+            var topic = data[da];
+            TOPIC[topic.topic_id] = topic.topic_tag;
+        }
+            
+    });
+}
+
+// PINE.alertErr = true;
+
+
+
+
+var TOPIC = APP.topic_tags = {};
+APP.walls = [];
+var LOCAL_WALLS = APP.local_walls = [];
+APP.location = {};
+APP.location.lat = 29.985899;
+APP.location.lng = -90.090230;
+
+APP.PATH_TO_SERVER = "http://108.238.241.202:8080";
+
+if(U.getCookie("run_local") == "true")
+    APP.PATH_TO_SERVER = "http://localhost:8080";
+
+// var ip;
+
+// PROG.get('https://api.ipify.org?format=json', function(response) {
+//     var data = JSON.parse(response);
+//     SESSION_CACHE.ip = data.ip; 
+
+// });
+// $.getJSON('https://api.ipify.org?format=json', function(data) {
+//     SESSION_CACHE.ip = data.ip; 
+// });
+
+
+
+
+
+
+// if(window.location.href.indexOf("file://") != -1)
+//     PATH_TO_SERVER = "http://localhost:8080";
+
+
+var style_include_cookie = U.getCookie("style_include") || "public/styles/celine.css";
+
+
+
+
+PINE.ready(function() {
+    // console.log(document.getElementById("content_view").FNS)
+    // alert(document.getElementById("content_view").FNS)
+
+    var back_btn = El.byId("back_btn");
+
+    El.byId("content_view").FNS.changeSrc.add(function(src) {
+        var oldView = El.attr(this, "src");
+
+        back_btn.style.padding = "10px";
+
+        if(src.indexOf("views/settings") != -1) {
+            back_btn.setAttribute("src", "views/map.html");
+            back_btn.innerHTML = "<- Map";
+        }
+        else if(src.indexOf("views/modWall") != -1) {
+            back_btn.setAttribute("src", "views/map.html");
+            back_btn.innerHTML = "<- Map";
+        }
+        else if(src.indexOf("views/map") != -1) {
+            back_btn.setAttribute("src", "views/settings.html");
+            back_btn.innerHTML = "<div id='settings_btn'></div>";
+            back_btn.style.padding = "0px";
+        }
+        else if(src.indexOf("views/wallTopics") != -1) {
+            back_btn.setAttribute("src", oldView);
+            back_btn.innerHTML = "<- Wall";
+        }
+        else if(src.indexOf("views/posts") != -1) {
+            back_btn.setAttribute("src", "views/map.html");
+            back_btn.innerHTML = "<- Map";
+        }
+        else if(src.indexOf("views/about") != -1) {
+            back_btn.setAttribute("src", "views/map.html");
+            back_btn.innerHTML = "<- Map";
+        }
+    }, "before");
+
+    // document.getElementById("content_view").FNS.changeSrc("views/map.html");
+    back_btn.setAttribute("src", "views/settings.html");
+        back_btn.innerHTML = "<div id='settings_btn'></div>";
+        back_btn.style.padding = "0px";
+
+
+
+
+    El.byId("style_include").FNS.changeSrc.add(function(src) {
+        U.setCookie("style_include", src);
+    }, "after");
+});
+
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <style>
@@ -75,9 +259,9 @@ html {
 }
 
 *, *:before, *:after {
-  	box-sizing: inherit;
-  	margin: 0px;
-	padding: 0px;
+    box-sizing: inherit;
+    margin: 0px;
+    padding: 0px;
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;
@@ -95,7 +279,7 @@ body,html {
 }
 
 img {
-	outline : none;
+    outline : none;
 }
 
 input {
@@ -121,11 +305,11 @@ button, #back_btn, #refresh_btn, #topics, .btn {
 
 /*CONSTANTS*/
 postlist {
-	width: 100%;
+    width: 100%;
 }
 
 post {
-	display: block;
+    display: block;
 }
 
 changeSrc {
@@ -137,13 +321,13 @@ changeSrc {
 
 
 post {
-	border-bottom: 1px solid rgba(0,0,0,0.2);
-	padding: 10px;
+    border-bottom: 1px solid rgba(0,0,0,0.2);
+    padding: 10px;
 }
 
 commentbox {
-	width: 100%;
-	height: 100px;
+    width: 100%;
+    height: 100px;
 }
 
 noscript {
@@ -191,183 +375,3 @@ ptopic {
 
 
 </style>
-
-<script type="text/javascript">
-    // U.showLog["include"] = true;
-    // U.showLog["permeate"] = true;
-    // U.showLog["opFunc"] = true;
-    // U.showLog["pinefunc"] = true;
-    // U.showLog["async"] = true;
-
-    INC.setCachingDefault(INC.BYROOT);
-
-
-
-
-    PROG = {};
-    PROG.get = function(localTarget) {
-        return new Promise(function(resolve, reject) {
-            var target = PATH_TO_SERVER+"/aardvark/"+localTarget;
-
-            var request = new XMLHttpRequest();
-            request.open('GET', target, true);
-
-            request.onload = function() {
-                if (request.status >= 200 && request.status < 400) {
-                    resolve(request.responseText);
-                } else {
-                    alert("include src '"+target+"' does not exist")
-                }
-            };
-
-            request.onerror = function() {
-                alert("include src '"+target+"' does not exist")
-            };
-
-            request.send();
-        });
-    }
-    
-
-    PROG.loadTags = function(tagsToLoad) {
-        console.log("TAGS", tagsToLoad);
-
-        return PROG.get("topics?ids="+tagsToLoad.toString()).then(function(response) {
-            
-            var data = JSON.parse(response).vals;
-            console.log(data);
-            for(var da in data) {
-                var topic = data[da];
-                TOPIC[topic.topic_id] = topic.topic_tag;
-            }
-                
-        });
-    }
-
-    PINE.alertErr = true;
-
-
-
-    SESSION_CACHE = {};
-    var TOPIC = SESSION_CACHE.topic_tags = {};
-    SESSION_CACHE.walls = [];
-    SESSION_CACHE.location = {};
-    SESSION_CACHE.location.lat = 29.985899;
-    SESSION_CACHE.location.lng = -90.090230;
-
-    // var ip;
-
-    // PROG.get('https://api.ipify.org?format=json', function(response) {
-    //     var data = JSON.parse(response);
-    //     SESSION_CACHE.ip = data.ip; 
-
-    // });
-    // $.getJSON('https://api.ipify.org?format=json', function(data) {
-    //     SESSION_CACHE.ip = data.ip; 
-    // });
-
-
-
-    PATH_TO_SERVER = "http://108.238.241.202:8080";
-
-
-
-
-    if(U.getCookie("run_local") == "true")
-        PATH_TO_SERVER = "http://localhost:8080";
-
-
-    // if(window.location.href.indexOf("file://") != -1)
-    //     PATH_TO_SERVER = "http://localhost:8080";
-
-
-    var style_include_cookie = U.getCookie("style_include") || "public/styles/celine.css";
-
-
-
-
-    PINE.ready(function() {
-        // console.log(document.getElementById("content_view").FNS)
-        // alert(document.getElementById("content_view").FNS)
-
-        var back_btn = El.byId("back_btn");
-
-        El.byId("content_view").FNS.changeSrc.add(function(src) {
-            var oldView = El.attr(this, "src");
-
-            back_btn.style.padding = "10px";
-
-            if(src.indexOf("views/settings") != -1) {
-                back_btn.setAttribute("src", "views/map.html");
-                back_btn.innerHTML = "<- Map";
-            }
-            else if(src.indexOf("views/modWall") != -1) {
-                back_btn.setAttribute("src", "views/map.html");
-                back_btn.innerHTML = "<- Map";
-            }
-            else if(src.indexOf("views/map") != -1) {
-                back_btn.setAttribute("src", "views/settings.html");
-                back_btn.innerHTML = "<div id='settings_btn'></div>";
-                back_btn.style.padding = "0px";
-            }
-            else if(src.indexOf("views/wallTopics") != -1) {
-                back_btn.setAttribute("src", oldView);
-                back_btn.innerHTML = "<- Wall";
-            }
-            else if(src.indexOf("views/posts") != -1) {
-                back_btn.setAttribute("src", "views/map.html");
-                back_btn.innerHTML = "<- Map";
-            }
-            else if(src.indexOf("views/about") != -1) {
-                back_btn.setAttribute("src", "views/map.html");
-                back_btn.innerHTML = "<- Map";
-            }
-        }, "before");
-
-        // document.getElementById("content_view").FNS.changeSrc("views/map.html");
-        back_btn.setAttribute("src", "views/settings.html");
-            back_btn.innerHTML = "<div id='settings_btn'></div>";
-            back_btn.style.padding = "0px";
-
-
-
-
-        document.getElementById("style_include").FNS.changeSrc.add(function(src) {
-            U.setCookie("style_include", src);
-        }, "after");
-    });
-
-
-
-</script>
-    
-<noscript>
-    It appears your browser has javascript disabled.  This app can't run without javascript.
-</noscript>
-
-
-    <!-- *********************
-    *                       *
-    *       BEGIN BODY      *
-    *                       *
-    ************************-->
-    <body><pine>
-
-
-        <content>
-            <!-- <button id="changePage" onclick="changePage()">Change Page</button> -->
-            <changeSrc id="back_btn" target="content_view"></changeSrc>
-            
-            <view id="content_view" src="views/map.html"></view>
-            <!-- <include id="content_view" src="views/posts.html?wall=0"></include> -->
-            
-        </content>
-    </pine></body>
-</html>
-
-
-
-
-
-
-
