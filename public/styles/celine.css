@@ -1,54 +1,61 @@
-body {
-	background-color: black;
-	color: #F0F;
-	font-family: monospace;
 
+/* mens restroom */
+/* simple, dirty, hilarious male bathroom banter */
+.point_icon_1 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-56.png")
+}
+
+/* men and womens restroom */
+/* the thoughts of people who are in a bathroom on their phone */
+.point_icon_2 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-57.png")
+}
+
+/* womens restrooom */
+/* I've never read what women write in the bathroom */
+.point_icon_3 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-58.png")
 }
 
 
-button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall, commentbox, input, .btn {
-	background-color: #000;
-	color: #F0F;
-	border: 1px solid #F0F;
+.point_icon_4 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-59.png")
 }
 
-heading {
-	background-color: #F0F;
-	color: #000;
-	font-size: 15px;
+.point_icon_5 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-60.png")
 }
 
-#map {
-	background-color: #000;
+/*.point_icon_6 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-61.png")
+}*/
+
+/*
+.point_icon_7 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-62.png")
+}*/
+
+.point_icon_8 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-63.png")
 }
 
-#settings_btn, #loc_refresh {
-	background-color: #F0F;
+.point_icon_9 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-64.png")
+}
+
+.point_icon_10 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-65.png")
+}
+
+/* a bench */
+/* could be bus stops, or park benches, or benches in general*/
+.point_icon_11 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-66.png")
+}
+
+.point_icon_12 {
+	background-image: url("public/images/icons/map_sets/kitty/Kitty_Icon_Set-67.png")
 }
 
 
-#you {
-	background-color: #F0F;
-}
 
-#land_tiling {
-	background-image: url('public/images/line_tiling.png');
-	background-size: 20px;
-	filter: blur(1px);
-	opacity: 1.0;
-}
-
-heading {
-	background-color: #F0F;
-	color: #000;
-	background-image: url('public/images/line_tiling.png');
-	background-size: 20px;
-}
-
-commentbox {
-	border: 1px solid #F0F;
-}
-
-peephole {
-	opacity: 0.6;
-}

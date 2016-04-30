@@ -52,6 +52,7 @@ P.S. seriously, I don't care.  just try to limit yourself to a few walls/topics.
 	
 
         <script src="needles/keepSquare.js"></script>
+        <script src="needles/ellipsize.js"></script>
 		<needle src="needles/Needle_CommentBox.html"></needle>
         <!-- <needle src="needles/keepSquare.js"></needle> -->
         <needle src="http://sephreed.github.io/PINE/needles/peephole.html"></needle>
@@ -82,6 +83,17 @@ html {
     background-size: contain;
 }
 
+body,html {
+    height: 100%;
+    width: 100%;
+}
+
+#content_view {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
 img {
 	outline : none;
 }
@@ -101,6 +113,7 @@ button, #back_btn, #refresh_btn, #topics, .btn {
 #back_btn {
     position: fixed;
     top: 0px;
+    z-index: 10;
 }
 
 
@@ -170,7 +183,6 @@ ptopic {
 .circle_btn {
     height: 40px;
     width: 40px;
-    background: #FAFAFA;
     border: solid 1px rgba(0,0,0,0.4);
     border-radius: 40px;
     cursor: pointer;
@@ -217,12 +229,27 @@ ptopic {
     }
     
 
+    PROG.loadTags = function(tagsToLoad) {
+        console.log("TAGS", tagsToLoad);
+
+        return PROG.get("topics?ids="+tagsToLoad.toString()).then(function(response) {
+            
+            var data = JSON.parse(response).vals;
+            console.log(data);
+            for(var da in data) {
+                var topic = data[da];
+                TOPIC[topic.topic_id] = topic.topic_tag;
+            }
+                
+        });
+    }
+
     PINE.alertErr = true;
 
 
 
     SESSION_CACHE = {};
-    var TOPIC = SESSION_CACHE.topic_tags = [];
+    var TOPIC = SESSION_CACHE.topic_tags = {};
     SESSION_CACHE.walls = [];
     SESSION_CACHE.location = {};
     SESSION_CACHE.location.lat = 29.985899;
@@ -254,7 +281,7 @@ ptopic {
     //     PATH_TO_SERVER = "http://localhost:8080";
 
 
-    var style_include_cookie = U.getCookie("style_include") || "public/styles/empty.css";
+    var style_include_cookie = U.getCookie("style_include") || "public/styles/celine.css";
 
 
 

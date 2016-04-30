@@ -4,8 +4,9 @@ body {
 	color: #333;
 }
 
-button, #topics, .btn {
-	background-color: #FC814A;
+button, #topics, .btn, .circle_btn {
+	/*background-color: #FC814A;*/
+	background-color: #FAFAFA;
 	border: 1px solid rgba(0,0,0,0.3);
 	overflow: hidden;
 }
@@ -46,7 +47,7 @@ heading {
 }
 
 #you {
-	background-color: #222;
+	background-color: #22689a;
 }
 
 #land_tiling {
@@ -62,7 +63,9 @@ heading {
 
 #wall_overlay {
 	background: #FAFAFA;
+	border: 1px solid rgba(0,0,0,0.8);
 }
+
 
 
 

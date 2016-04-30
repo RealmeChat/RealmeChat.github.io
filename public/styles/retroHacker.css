@@ -1,15 +1,30 @@
-body {
+
+body, content, #recent_posts, #wall_overlay {
 	background-color: black;
 	color: #2CE92C;
 	font-family: monospace;
 
 }
 
+body {
+	filter: blur(0.18px);
+	opacity: 0.9;
+}
 
-button, #back_btn, #create_wall, #loc_refresh, #topics, #create_wall, commentbox, input, .btn {
-	background-color: #000;
-	color: #2CE92C;
+
+button, #back_btn, #create_wall, #refresh_btn, #topics, #create_wall, commentbox, input, .btn, .circle_btn {
+	background-color: #2CE92C;
+	color: #000;
 	border: 1px solid #2CE92C;
+	opacity: 1.0;
+}
+
+#wall_overlay {
+	border: 1px solid #2CE92C;
+}
+
+#recent_posts {
+	border-top: 2px solid #2CE92C;
 }
 
 heading {
@@ -20,22 +35,27 @@ heading {
 
 #map {
 	background-color: #000;
+	background-image: url('public/images/line_tiling.png');
+	background-size: 20px;
+	background-repeat: repeat;
+	/*filter: blur(1px);*/
 }
 
-#settings_btn, #loc_refresh {
+#loc_refresh {
 	background-color: #2CE92C;
 }
 
 
 #you {
+	background-color: #000;
+}
+
+#map_land {
 	background-color: #2CE92C;
 }
 
 #land_tiling {
-	background-image: url('public/images/line_tiling.png');
-	background-size: 20px;
-	filter: blur(1px);
-	opacity: 1.0;
+	display: none;
 }
 
 heading {
@@ -45,7 +65,8 @@ heading {
 	background-size: 20px;
 }
 
-commentbox {
+commentbox, textarea {
+	color: black;
 	border: 1px solid #2CE92C;
 }
 

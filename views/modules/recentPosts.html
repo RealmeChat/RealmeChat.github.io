@@ -19,18 +19,22 @@ function showFirstPostFor(i_walls) {
 		console.log(data);
 
 		// local_wall_posts = [];
+		var unloaded_tags = [];
 
-		var i = 0;
 		for (var da in data) {
 			// local_wall_posts.push(data[da][0]);
-			var wall_id = i_walls[i];
+			var wall_id = da;
 			var recent_post = data[da][0];
 			SESSION_CACHE.walls[wall_id].recent_post = recent_post;
-			i++;
+
+			var topic_id = recent_post.post_topic_id;
+			if(TOPIC[topic_id] === undefined)
+				unloaded_tags.push(topic_id);
 		}
 
-		El.byId("local_posts").FNS.update();
-
+		PROG.loadTags(unloaded_tags).then(function() {
+			El.byId("local_posts").FNS.update();	
+		});
 	});
 
 }
@@ -142,18 +146,22 @@ PINE.ready(function(){
 
 #recent_posts_fade {
 	display: inherit;
-	z-index: -1;
+	z-index: 0;
 	opacity: 0;
 	pointer-events: none;
 	transition: opacity 0.3s ease;
 }
 
+.post_body {
+	position: relative;
+	max-height: 40px;
+	overflow: hidden;
+}
 
 
 
 </style>
 <!-- <div id+> -->
-	<fade id="recent_posts_fade"></fade>
 
 	<changeSrc id="create_wall" 
 		class="circle_btn" 
@@ -165,10 +173,13 @@ PINE.ready(function(){
 	<div id="local_posts" spawner="local_walls" setpvar="wall=SESSION_CACHE.walls[local_walls[i]]">
 		<changeSrc target="wall_view" src="views/posts.html?wall={{wall.wall_id}}" spawn>
 			<icon class="point_icon_{{wall.wall_icon_id}}"></icon>
-			{{wall.recent_post}}
+			<div class="post_body" ellipsize>{{wall.recent_post.post_body}}</div>
 			<div class="post_details">
-				<ptime>Dec 17, 2016 10:00</ptime>
-				<ptopic>#{{TOPIC[wall.wall_topic_id]}}</ptopic>
+				<!-- <ptime>Dec 17, 2016 10:00</ptime> -->
+				<ptime>{{wall.recent_post.post_date}}</ptime>
+				<ptopic>#{{TOPIC[wall.recent_post.post_topic_id]}}</ptopic>
+				<!-- <ptopic>#{{wall.recent_post.post_topic_id}}</ptopic> -->
+				<!-- <ptopic>#{{}}</ptopic> -->
 			</div>
 		</changeSrc>
 	</div>

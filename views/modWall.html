@@ -32,6 +32,7 @@
 	function submitWall() {
 		var wall_name = El.byId("wall_name").value;
 		var icon_id = icon_chooser.value;
+		var first_post = El.byId("first_post").value;
 		// alert(wall_name+" "+icon_id);
 
 		var data = {
@@ -40,7 +41,9 @@
 			wall_lng : SESSION_CACHE.location.lng,
 			wall_rollover : 100,
 			wall_icon_id : icon_id,
-			wall_creator_id : 0
+			wall_creator_id : 0,
+			wall_first_post_body : first_post,
+			wall_first_post_tag : "firstpost"
 		}
 
 		var request = new XMLHttpRequest();
@@ -142,6 +145,12 @@ iconitem:hover {
 	margin: 5px;
 }
 
+#first_post {
+	display: block;
+	width: 100%;
+	min-height: 150px;
+}
+
 
 
 </style>
@@ -168,7 +177,10 @@ iconitem:hover {
 		<h2>Settings</h2>
 		Rollover count<br>
 	</div> -->
-	2. Name your wall: <input id="wall_name" type="textarea" placeholder="type here"></input>
+	2. Name your wall: <input id="wall_name" type="textarea" placeholder="type here"></input><br>
+	<br>
+	3. Create the first post:<br>
+	<textarea id="first_post"></textarea>
 
 	<button id="create_new_wall" onclick="submitWall()">Create</button>
 	<button id="delete_wall" onclick="deleteWall()" style="display: none">DELETE WALL</button>
